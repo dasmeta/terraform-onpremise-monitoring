@@ -1,4 +1,4 @@
-# terraform-onpremise-grafana
+# terraform-onpremise-monitoring
 This module is created to manage OnPremise Monitoring stack with Terraform. At this moment we support managing Grafana Alerts with `alerts` submodule but more parts are on their way.
 
 ## Example
