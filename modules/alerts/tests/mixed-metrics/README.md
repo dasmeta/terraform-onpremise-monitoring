@@ -6,3 +6,34 @@ This test case demonstrates how to configure Grafana alerts to monitor various a
 2. **Autoscaling**: Tracks the maximum replicas used by the `App_2` microservice. The alert is triggered when the replica count exceeds or reaches 20. The `kube_deployment_status_replicas_available` metric is utilized for this purpose.
 
 3. **Replica Count**: Monitors the availability of replicas for two microservices, `App_1` and `App_3`. The alerts are triggered when the available replica count falls below 1. The `kube_deployment_status_replicas_available` metric is used to track the replica availability.
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
+
+No requirements.
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_test"></a> [test](#provider\_test) | n/a |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_this"></a> [this](#module\_this) | ../../ | n/a |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| test_assertions.dummy | resource |
+
+## Inputs
+
+No inputs.
+
+## Outputs
+
+No outputs.
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

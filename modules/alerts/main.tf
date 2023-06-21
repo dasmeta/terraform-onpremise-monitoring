@@ -137,7 +137,7 @@ EOT
     "intervalMs": 1000,
     "maxDataPoints": 43200,
     "refId": "C",
-    "type": "math"   
+    "type": "math"
 }
 EOT
       }

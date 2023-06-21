@@ -6,3 +6,34 @@ In this test, we have set up two alert rules to detect when the available replic
 For each microservice, we have specified a filter to match the deployment name (`app-1-microservice` and `app-2-microservice`). The `last` function is used to process the metric values, respectively.
 
 The condition `$B < 1` is used to check if the available replicas fall below 1, indicating that the application doesn't have any replicas.
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
+
+No requirements.
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_test"></a> [test](#provider\_test) | n/a |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_this"></a> [this](#module\_this) | ../../ | n/a |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| test_assertions.dummy | resource |
+
+## Inputs
+
+No inputs.
+
+## Outputs
+
+No outputs.
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

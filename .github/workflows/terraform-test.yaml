@@ -16,7 +16,7 @@ jobs:
       matrix:
         path:
           - /
-     
+
     steps:
     - uses: dasmeta/reusable-actions-workflows/terraform-test@4.2.0
       with:
