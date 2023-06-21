@@ -17,7 +17,7 @@ jobs:
       matrix:
         path:
           - /
-     
+
     steps:
     - uses: dasmeta/reusable-actions-workflows/checkov@4.2.0
       with:

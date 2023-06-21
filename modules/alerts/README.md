@@ -1,58 +1,29 @@
-# terraform-onpremise-grafana
-This module is created to manage OnPremise Monitoring stack with Terraform. At this moment we support managing Grafana Alerts with `alerts` submodule but more parts are on their way.
-
-## Example
-```
-module "this" {
-  source = "dasmeta/onpremise/grafana"
-
-  alert_rules = [
-    {
-      name        = "App_1 has 0 available replicas"
-      folder_name = "Replica Count"
-      datasource  = "prometheus"
-      metric_name = "kube_deployment_status_replicas_available"
-      filters = {
-        deployment = "app-1-microservice"
-      }
-      function  = "last"
-      condition = "$B < 1"
-    },
-    {
-      name        = "App_2 has 0 available replicas"
-      folder_name = "Replica Count"
-      datasource  = "prometheus"
-      metric_name = "kube_deployment_status_replicas_available"
-      filters = {
-        deployment = "app-2-microservice"
-      }
-      function  = "last"
-      condition = "$B < 1"
-    }
-  ]
-}
-```
-
 ## Usage
-Check `modules/alerts/tests` folder to see more examples.
+To enable some of these alerts for your applications, you just need to replace  `App_1`, `App_2` and `App_3` with the actual names of your applications. You can refer to the Prometheus metrics to identify the available filters that can be used for each application. Additionally, modify the values in the conditions to reflect the real cases of your applications. These adjustments will ensure that the alerts accurately monitor your specific applications and their scaling needs.
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_grafana"></a> [grafana](#requirement\_grafana) | >= 1.40.0 |
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_grafana"></a> [grafana](#provider\_grafana) | >= 1.40.0 |
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_alerts"></a> [alerts](#module\_alerts) | ./modules/alerts | n/a |
+No modules.
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [grafana_folder.rule_folder](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder) | resource |
+| [grafana_rule_group.alert_rule](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/rule_group) | resource |
 
 ## Inputs
 
