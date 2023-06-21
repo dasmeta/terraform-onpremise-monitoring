@@ -1,10 +1,5 @@
-# terraform-onpremise-grafana
-This module is created to manage OnPremise Monitoring stack with Terraform. At this moment we support managing Grafana Alerts with `alerts` submodule but more parts are on their way.
-
-## Example
-```
 module "this" {
-  source = "dasmeta/onpremise/grafana"
+  source = "../../"
 
   alert_rules = [
     {
@@ -31,7 +26,3 @@ module "this" {
     }
   ]
 }
-```
-
-## Usage
-Check `modules/alerts/tests` folder to see more examples.
