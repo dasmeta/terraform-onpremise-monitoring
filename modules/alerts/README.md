@@ -29,8 +29,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_alert_interval_seconds"></a> [alert\_interval\_seconds](#input\_alert\_interval\_seconds) | The interval, in seconds, at which all rules in the group are evaluated. If a group contains many rules, the rules are evaluated sequentially. | `number` | `10` | no |
 | <a name="input_alert_rules"></a> [alert\_rules](#input\_alert\_rules) | This varibale describes alert folders, groups and rules. | <pre>list(object({<br>    name        = string                          # The name of the alert rule<br>    summary     = optional(string, "")            # Rule annotation as a summary<br>    folder_name = optional(string, "Main Alerts") # Grafana folder name in which the rule will be created<br>    datasource  = string                          # Name of the datasource used for the alert<br>    metric_name = string                          # Prometheus metric name which queries the data for the alert<br>    filters     = optional(any, {})               # Filters object to identify each service for alerting<br>    function    = optional(string, "mean")        # One of Reduce functions which will be used in B block for alerting<br>    condition   = string                          # Math expression which compares B blocks value with a number and generates an alert if needed<br>  }))</pre> | `[]` | no |
-| <a name="input_interval_seconds"></a> [interval\_seconds](#input\_interval\_seconds) | The interval, in seconds, at which all rules in the group are evaluated. If a group contains many rules, the rules are evaluated sequentially. | `number` | `10` | no |
 
 ## Outputs
 
