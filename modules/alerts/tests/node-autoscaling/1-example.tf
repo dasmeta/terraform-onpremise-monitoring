@@ -10,7 +10,8 @@ module "this" {
       filters     = null
       metric_name = "sum(kube_node_info)"
       function    = "mean"
-      condition   = "$B >= 8"
+      equation    = "gt"
+      threshold   = "8"
     },
     {
       name        = "High node utilization in cluster"
@@ -20,7 +21,8 @@ module "this" {
       filters     = null
       metric_name = "sum(kube_node_info)"
       function    = "mean"
-      condition   = "$B >= 6"
+      equation    = "gt"
+      threshold   = "6"
     },
     {
       name        = "Insufficient nodes in cluster"
@@ -30,7 +32,8 @@ module "this" {
       filters     = null
       metric_name = "sum(kube_node_info)"
       function    = "mean"
-      condition   = "$B < 2"
+      equation    = "lt"
+      threshold   = "2"
     }
   ]
 }

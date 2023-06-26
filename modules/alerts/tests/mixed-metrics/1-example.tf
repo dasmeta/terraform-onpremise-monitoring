@@ -12,7 +12,8 @@ module "this" {
         container = "app-1-container"
       }
       function  = "mean"
-      condition = "$B > 2"
+      equation  = "gt"
+      threshold = 2
     },
     {
       name        = "App_2 max autoscaling"
@@ -24,7 +25,8 @@ module "this" {
         deployment = "app-2-microservice"
       }
       function  = "mean"
-      condition = "$B >= 20"
+      equation  = "gte"
+      threshold = 20
     },
     {
       name        = "App_1 has 0 available replicas"
@@ -35,7 +37,8 @@ module "this" {
         deployment = "app-1-microservice"
       }
       function  = "mean"
-      condition = "$B < 1"
+      equation  = "lt"
+      threshold = 1
     },
     {
       name        = "App_3 has 0 available replicas"
@@ -46,7 +49,8 @@ module "this" {
         deployment = "app-3-microservice"
       }
       function  = "mean"
-      condition = "$B < 1"
+      equation  = "lt"
+      threshold = 1
     },
     {
       name        = "Maximum node utilization in cluster"
@@ -56,7 +60,8 @@ module "this" {
       filters     = null
       metric_name = "sum(kube_node_info)"
       function    = "mean"
-      condition   = "$B >= 8"
+      equation    = "gte"
+      threshold   = 8
     }
   ]
 }

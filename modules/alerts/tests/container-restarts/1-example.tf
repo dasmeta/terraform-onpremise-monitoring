@@ -12,7 +12,8 @@ module "this" {
         container = "app-1-container"
       }
       function  = "mean"
-      condition = "$B > 2"
+      equation  = "gt"
+      threshold = 2
     },
     {
       name        = "App_2 has too many restarts"
@@ -23,7 +24,8 @@ module "this" {
         container = "app-2-container"
       }
       function  = "mean"
-      condition = "$B >= 4"
+      equation  = "gte"
+      threshold = 4
     }
   ]
 }

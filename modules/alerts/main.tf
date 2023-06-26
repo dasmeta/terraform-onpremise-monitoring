@@ -1,6 +1,13 @@
 locals {
   folders = toset(distinct([for rule in var.alert_rules : rule.folder_name]))
   alerts  = { for member in local.folders : member => [for rule in var.alert_rules : rule if rule.folder_name == member] }
+  comparison_operators = {
+    gte : ">=",
+    gt : ">",
+    lt : "<",
+    lte : "<=",
+    e : "="
+  }
 }
 
 resource "grafana_folder" "rule_folder" {
@@ -132,7 +139,7 @@ EOT
         "type": "__expr__",
         "uid": "__expr__"
     },
-    "expression": "${rule.value.condition}",
+    "expression": "$B ${local.comparison_operators[rule.value.equation]} ${rule.value.threshold}",
     "hide": false,
     "intervalMs": 1000,
     "maxDataPoints": 43200,
