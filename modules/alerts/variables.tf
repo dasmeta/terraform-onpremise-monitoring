@@ -13,7 +13,7 @@ variable "alert_rules" {
     metric_name = string                          # Prometheus metric name which queries the data for the alert
     filters     = optional(any, {})               # Filters object to identify each service for alerting
     function    = optional(string, "mean")        # One of Reduce functions which will be used in B block for alerting
-    equation    = string                          # The equation in the math expression which compares B blocks value with a number and generates an alert if needed. Possible values: gt, lt, gte, lte, e.
+    equation    = string                          # The equation in the math expression which compares B blocks value with a number and generates an alert if needed. Possible values: gt, lt, gte, lte, e
     threshold   = number                          # The value against which B blocks are compared in the math expression
   }))
   default     = []
