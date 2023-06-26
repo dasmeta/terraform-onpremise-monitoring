@@ -34,6 +34,16 @@ module "grafana_alerts" {
       }
       function  = "last"
       condition = "$B < 1"
+    },
+    {
+      name        = "Insufficient nodes in cluster"
+      summary     = "Cluster is using fewer nodes than the required count"
+      folder_name = "Node Autoscaling"
+      datasource  = "prometheus"
+      filters     = null
+      metric_name = "sum(kube_node_info)"
+      function    = "mean"
+      condition   = "$B < 2"
     }
   ]
 }

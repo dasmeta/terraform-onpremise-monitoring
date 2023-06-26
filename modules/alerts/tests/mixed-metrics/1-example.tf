@@ -47,6 +47,16 @@ module "this" {
       }
       function  = "mean"
       condition = "$B < 1"
+    },
+    {
+      name        = "Maximum node utilization in cluster"
+      summary     = "Cluster is using 8 available nodes"
+      folder_name = "Node Autoscaling"
+      datasource  = "prometheus"
+      filters     = null
+      metric_name = "sum(kube_node_info)"
+      function    = "mean"
+      condition   = "$B >= 8"
     }
   ]
 }

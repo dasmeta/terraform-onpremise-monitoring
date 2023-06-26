@@ -39,7 +39,7 @@ resource "grafana_rule_group" "alert_rule" {
         model          = <<EOT
 {
     "editorMode": "code",
-    "expr": "${rule.value.metric_name}{${replace(join(", ", [for k, v in rule.value.filters : "${k}=\"${v}\""]), "\"", "\\\"")}}",
+    "expr": "${rule.value.metric_name}${(rule.value.filters != null && length(rule.value.filters) > 0) ? format("{%s}", replace(join(", ", [for k, v in rule.value.filters : "${k}=\"${v}\""]), "\"", "\\\"")) : ""}",
     "hide": false,
     "intervalMs": "1000",
     "legendFormat": "__auto",
