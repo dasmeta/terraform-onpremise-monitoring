@@ -12,7 +12,8 @@ module "this" {
         deployment = "app-1-microservice"
       }
       function  = "mean"
-      condition = "$B >= 20"
+      equation  = "gte"
+      threshold = 20
     },
     {
       name        = "App_2 max autoscaling"
@@ -24,7 +25,8 @@ module "this" {
         deployment = "app-2-microservice"
       }
       function  = "mean"
-      condition = "$B >= 20"
+      equation  = "gte"
+      threshold = 20
     }
   ]
 }

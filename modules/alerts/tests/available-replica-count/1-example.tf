@@ -11,7 +11,8 @@ module "this" {
         deployment = "app-1-microservice"
       }
       function  = "last"
-      condition = "$B < 1"
+      equation  = "lt"
+      threshold = 1
     },
     {
       name        = "App_2 has 0 available replicas"
@@ -22,7 +23,8 @@ module "this" {
         deployment = "app-2-microservice"
       }
       function  = "last"
-      condition = "$B < 1"
+      equation  = "lt"
+      threshold = 1
     }
   ]
 }

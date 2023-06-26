@@ -6,6 +6,17 @@ At this moment we support managing
 
 More parts are coming soon.
 
+## Tips
+1. Alert conditions are formed based on $B blocks and `equation`, `threshold` parameters users pass to the module.
+`equation` parameter can only get these values:
+- `lt` corresponds to `<`
+- `gt` corresponds to `>`
+- `e` corresponds to `=`
+- `lte` corresponds to `<=`
+- `gte` corresponds to `>=`
+And `threshold` parameter is the number value against which B blocks are compared in the math expression.
+2. We pass `null` value to `filters` variable. It's needed when we use such Prometheus metrics which don't get any filters when querying.
+
 ## Example for Alert Rules
 ```
 module "grafana_alerts" {
@@ -22,7 +33,8 @@ module "grafana_alerts" {
         deployment = "app-1-microservice"
       }
       function  = "last"
-      condition = "$B < 1"
+      equation = "lt"
+      threshold = 1
     },
     {
       name        = "App_2 has 0 available replicas"
@@ -33,7 +45,19 @@ module "grafana_alerts" {
         deployment = "app-2-microservice"
       }
       function  = "last"
-      condition = "$B < 1"
+      equation = "lt"
+      threshold = 1
+    },
+    {
+      name        = "Insufficient nodes in cluster"
+      summary     = "Cluster is using fewer nodes than the required count"
+      folder_name = "Node Autoscaling"
+      datasource  = "prometheus"
+      filters     = null
+      metric_name = "sum(kube_node_info)"
+      function    = "mean"
+      equation = "lte"
+      threshold = 2
     }
   ]
 }
@@ -79,7 +103,8 @@ module "grafana_alerts" {
         deployment = "app-1-microservice"
       }
       function  = "last"
-      condition = "$B < 1"
+      equation = "lt"
+      threshold = 1
     },
     {
       name        = "App_2 has 0 available replicas"
@@ -90,7 +115,8 @@ module "grafana_alerts" {
         deployment = "app-2-microservice"
       }
       function  = "last"
-      condition = "$B < 1"
+      equation = "lt"
+      threshold = 1
     }
   ]
   opsgenie_endpoints = [

@@ -5,7 +5,7 @@ In this test, we have set up two alert rules to monitor the restart count of mic
 
 For each microservice, we have specified a filter to match the container name (`app-1-container` and `app-2-container`). The `mean` function is used to aggregate the restart count values.
 
-The conditions `$B > 2` and `$B >= 4` are employed to check if the restart count exceeds the thresholds for each microservice. When the conditions are met, indicating a high restart count, the alerts will be triggered.
+The `eqaution`, `threshold` parameters are employed to check if the restart count exceeds the thresholds for each microservice. When the conditions are met, indicating a high restart count, the alerts will be triggered.
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 

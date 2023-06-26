@@ -1,5 +1,17 @@
 ## Usage
 To enable some of these alerts for your applications, you just need to replace  `App_1`, `App_2` and `App_3` with the actual names of your applications. You can refer to the Prometheus metrics to identify the available filters that can be used for each application. Additionally, modify the values in the conditions to reflect the real cases of your applications. These adjustments will ensure that the alerts accurately monitor your specific applications and their scaling needs.
+
+## Tips
+Alert conditions are formed based on $B blocks and `equation`, `threshold` parameters users pass to the module.
+`equation` parameter can only get these values:
+- `lt` corresponds to `<`
+- `gt` corresponds to `>`
+- `e` corresponds to `=`
+- `lte` corresponds to `<=`
+- `gte` corresponds to `>=`
+
+And `threshold` parameter is the number value against which B blocks are compared in the math expression.
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
@@ -30,7 +42,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_alert_interval_seconds"></a> [alert\_interval\_seconds](#input\_alert\_interval\_seconds) | The interval, in seconds, at which all rules in the group are evaluated. If a group contains many rules, the rules are evaluated sequentially. | `number` | `10` | no |
-| <a name="input_alert_rules"></a> [alert\_rules](#input\_alert\_rules) | This varibale describes alert folders, groups and rules. | <pre>list(object({<br>    name        = string                          # The name of the alert rule<br>    summary     = optional(string, "")            # Rule annotation as a summary<br>    folder_name = optional(string, "Main Alerts") # Grafana folder name in which the rule will be created<br>    datasource  = string                          # Name of the datasource used for the alert<br>    metric_name = string                          # Prometheus metric name which queries the data for the alert<br>    filters     = optional(any, {})               # Filters object to identify each service for alerting<br>    function    = optional(string, "mean")        # One of Reduce functions which will be used in B block for alerting<br>    condition   = string                          # Math expression which compares B blocks value with a number and generates an alert if needed<br>  }))</pre> | `[]` | no |
+| <a name="input_alert_rules"></a> [alert\_rules](#input\_alert\_rules) | This varibale describes alert folders, groups and rules. | <pre>list(object({<br>    name        = string                          # The name of the alert rule<br>    summary     = optional(string, "")            # Rule annotation as a summary<br>    folder_name = optional(string, "Main Alerts") # Grafana folder name in which the rule will be created<br>    datasource  = string                          # Name of the datasource used for the alert<br>    metric_name = string                          # Prometheus metric name which queries the data for the alert<br>    filters     = optional(any, {})               # Filters object to identify each service for alerting<br>    function    = optional(string, "mean")        # One of Reduce functions which will be used in B block for alerting<br>    equation    = string                          # The equation in the math expression which compares B blocks value with a number and generates an alert if needed. Possible values: gt, lt, gte, lte, e.<br>    threshold   = number                          # The value against which B blocks are compared in the math expression<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

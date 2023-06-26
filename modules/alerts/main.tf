@@ -1,6 +1,13 @@
 locals {
   folders = toset(distinct([for rule in var.alert_rules : rule.folder_name]))
   alerts  = { for member in local.folders : member => [for rule in var.alert_rules : rule if rule.folder_name == member] }
+  comparison_operators = {
+    gte : ">=",
+    gt : ">",
+    lt : "<",
+    lte : "<=",
+    e : "="
+  }
 }
 
 resource "grafana_folder" "rule_folder" {
@@ -39,7 +46,7 @@ resource "grafana_rule_group" "alert_rule" {
         model          = <<EOT
 {
     "editorMode": "code",
-    "expr": "${rule.value.metric_name}{${replace(join(", ", [for k, v in rule.value.filters : "${k}=\"${v}\""]), "\"", "\\\"")}}",
+    "expr": "${rule.value.metric_name}${(rule.value.filters != null && length(rule.value.filters) > 0) ? format("{%s}", replace(join(", ", [for k, v in rule.value.filters : "${k}=\"${v}\""]), "\"", "\\\"")) : ""}",
     "hide": false,
     "intervalMs": "1000",
     "legendFormat": "__auto",
@@ -132,7 +139,7 @@ EOT
         "type": "__expr__",
         "uid": "__expr__"
     },
-    "expression": "${rule.value.condition}",
+    "expression": "$B ${local.comparison_operators[rule.value.equation]} ${rule.value.threshold}",
     "hide": false,
     "intervalMs": 1000,
     "maxDataPoints": 43200,
