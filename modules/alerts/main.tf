@@ -13,7 +13,7 @@ resource "grafana_rule_group" "alert_rule" {
 
   name             = "${each.key} Group"
   folder_uid       = grafana_folder.rule_folder[each.key].uid
-  interval_seconds = var.interval_seconds
+  interval_seconds = var.alert_interval_seconds
   org_id           = 1
   dynamic "rule" {
     for_each = each.value

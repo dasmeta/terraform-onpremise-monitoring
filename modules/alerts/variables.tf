@@ -1,4 +1,4 @@
-variable "interval_seconds" {
+variable "alert_interval_seconds" {
   type        = number
   default     = 10
   description = "The interval, in seconds, at which all rules in the group are evaluated. If a group contains many rules, the rules are evaluated sequentially."
