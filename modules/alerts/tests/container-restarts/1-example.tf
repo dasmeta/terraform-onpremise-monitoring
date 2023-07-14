@@ -9,7 +9,7 @@ module "this" {
       datasource      = "prometheus"
       metric_name     = "kube_pod_container_status_restarts_total"
       metric_function = "rate"
-      metric_interval = "5m"
+      metric_interval = "[5m]"
       filters = {
         container = "app-1-container"
       }
@@ -23,7 +23,7 @@ module "this" {
       datasource      = "prometheus"
       metric_name     = "kube_pod_container_status_restarts_total"
       metric_function = "rate"
-      metric_interval = "5m"
+      metric_interval = "[5m]"
       filters = {
         container = "app-2-container"
       }
