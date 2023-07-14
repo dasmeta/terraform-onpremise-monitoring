@@ -3,15 +3,16 @@ module "this" {
 
   alert_rules = [
     {
-      name        = "Maximum node utilization in cluster"
-      summary     = "Cluster is using 8 available nodes"
-      folder_name = "Node Autoscaling"
-      datasource  = "prometheus"
-      filters     = null
-      metric_name = "sum(kube_node_info)"
-      function    = "mean"
-      equation    = "gt"
-      threshold   = "8"
+      name            = "Maximum node utilization in cluster"
+      summary         = "Cluster is using 8 available nodes"
+      folder_name     = "Node Autoscaling"
+      datasource      = "prometheus"
+      filters         = null
+      metric_name     = "kube_node_info"
+      metric_function = "sum"
+      function        = "mean"
+      equation        = "gt"
+      threshold       = "8"
     },
     {
       name        = "High node utilization in cluster"
@@ -19,21 +20,21 @@ module "this" {
       folder_name = "Node Autoscaling"
       datasource  = "prometheus"
       filters     = null
-      metric_name = "sum(kube_node_info)"
+      metric_name = "kube_node_info"
       function    = "mean"
       equation    = "gt"
       threshold   = "6"
     },
     {
-      name        = "Insufficient nodes in cluster"
-      summary     = "Cluster is using fewer nodes than the required count"
-      folder_name = "Node Autoscaling"
-      datasource  = "prometheus"
-      filters     = null
-      metric_name = "sum(kube_node_info)"
-      function    = "mean"
-      equation    = "lt"
-      threshold   = "2"
+      name            = "Insufficient nodes in cluster"
+      summary         = "Cluster is using fewer nodes than the required count"
+      folder_name     = "Node Autoscaling"
+      datasource      = "prometheus"
+      filters         = null
+      metric_function = "sum"
+      function        = "mean"
+      equation        = "lt"
+      threshold       = "2"
     }
   ]
 }
