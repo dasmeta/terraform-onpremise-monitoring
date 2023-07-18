@@ -11,3 +11,9 @@ module "contact_points" {
   slack_endpoints    = var.slack_endpoints
   opsgenie_endpoints = var.opsgenie_endpoints
 }
+
+module "notifications" {
+  source = "./modules/notifications"
+
+  slack_endpoints = var.notifications
+}

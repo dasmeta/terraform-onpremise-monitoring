@@ -8,6 +8,7 @@ variable "alert_rules" {
   type = list(object({
     name            = string                          # The name of the alert rule
     summary         = optional(string, "")            # Rule annotation as a summary
+    priority        = optional(string, "P2")          # Rule priority level: P2 is for non-critical alerts, P1 will be set for critical alerts
     folder_name     = optional(string, "Main Alerts") # Grafana folder name in which the rule will be created
     datasource      = string                          # Name of the datasource used for the alert
     metric_name     = string                          # Prometheus metric name which queries the data for the alert

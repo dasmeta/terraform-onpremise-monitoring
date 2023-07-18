@@ -5,7 +5,8 @@ module "this" {
     {
       name            = "Maximum node utilization in cluster"
       summary         = "Cluster is using 8 available nodes"
-      folder_name     = "Node Autoscaling"
+      folder_name     = "Test"
+      priority        = "P1"
       datasource      = "prometheus"
       filters         = null
       metric_name     = "kube_node_info"
@@ -17,7 +18,7 @@ module "this" {
     {
       name        = "High node utilization in cluster"
       summary     = "Cluster is using 6 of the available 8 nodes"
-      folder_name = "Node Autoscaling"
+      folder_name = "Test"
       datasource  = "prometheus"
       filters     = null
       metric_name = "kube_node_info"
@@ -28,9 +29,10 @@ module "this" {
     {
       name            = "Insufficient nodes in cluster"
       summary         = "Cluster is using fewer nodes than the required count"
-      folder_name     = "Node Autoscaling"
+      folder_name     = "Test"
       datasource      = "prometheus"
       filters         = null
+      metric_name     = "kube_node_info"
       metric_function = "sum"
       function        = "mean"
       equation        = "lt"
