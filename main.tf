@@ -15,5 +15,5 @@ module "contact_points" {
 module "notifications" {
   source = "./modules/notifications"
 
-  slack_endpoints = var.notifications
+  notifications = var.notifications
 }
