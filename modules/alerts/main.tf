@@ -34,6 +34,9 @@ resource "grafana_rule_group" "alert_rule" {
         "Managed By" = "Terraform"
         "Summary"    = lookup(rule.value, "summary", rule.value.name)
       }
+      labels = {
+        "priority" = lookup(rule.value, "priority", "P2")
+      }
       is_paused = false
       data {
         ref_id     = "A"
