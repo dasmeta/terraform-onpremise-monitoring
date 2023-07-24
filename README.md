@@ -3,19 +3,9 @@ This module is created to manage OnPremise Grafana stack with Terraform.
 At this moment we support managing
 - Grafana Alerts with `alerts` submodule
 - Grafana Contact Points with `contact-points` submodule
+- Grafana Notification Policies with `notifications` submodule
 
 More parts are coming soon.
-
-## Tips
-1. Alert conditions are formed based on $B blocks and `equation`, `threshold` parameters users pass to the module.
-`equation` parameter can only get these values:
-- `lt` corresponds to `<`
-- `gt` corresponds to `>`
-- `e` corresponds to `=`
-- `lte` corresponds to `<=`
-- `gte` corresponds to `>=`
-And `threshold` parameter is the number value against which B blocks are compared in the math expression.
-2. We pass `null` value to `filters` variable. It's needed when we use such Prometheus metrics which don't get any filters when querying.
 
 ## Example for Alert Rules
 ```
@@ -37,28 +27,14 @@ module "grafana_alerts" {
       threshold = 1
     },
     {
-      name        = "App_2 has 0 available replicas"
-      folder_name = "Replica Count"
+      name        = "Nginx Expressions"
+      folder_name = "Nginx Expressions Group"
       datasource  = "prometheus"
-      metric_name = "kube_deployment_status_replicas_available"
-      filters = {
-        deployment = "app-2-microservice"
-      }
-      function  = "last"
-      equation = "lt"
-      threshold = 1
-    },
-    {
-      name        = "Insufficient nodes in cluster"
-      summary     = "Cluster is using fewer nodes than the required count"
-      folder_name = "Node Autoscaling"
-      datasource  = "prometheus"
-      filters     = null
-      metric_name = "sum(kube_node_info)"
+      expr        = "sum(rate(nginx_ingress_controller_requests{status=~'5..'}[1m])) by (ingress,cluster) / sum(rate(nginx_ingress_controller_requests[1m]))by (ingress) * 100 > 5"
       function    = "mean"
-      equation = "lte"
-      threshold = 2
-    }
+      equation    = "gt"
+      threshold   = 2
+    },
   ]
 }
 ```
@@ -185,7 +161,7 @@ module "grafana_alerts" {
 ```
 
 ## Usage
-Check `modules/alerts/tests`, `modules/contact-points/test` and `modules/notifications/test` folders to see more examples.
+Check `modules/alerts/tests`, `modules/contact-points/tests` and `modules/notifications/tests` folders to see more examples.
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
