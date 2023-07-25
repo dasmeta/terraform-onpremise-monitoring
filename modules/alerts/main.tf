@@ -1,6 +1,8 @@
 locals {
   folders = toset(distinct([for rule in var.alert_rules : rule.folder_name]))
-  alerts  = { for member in local.folders : member => [for rule in var.alert_rules : rule if rule.folder_name == member] }
+  alerts = { for member in local.folders : member => [for rule in var.alert_rules : merge(rule, {
+    expr : coalesce(rule.expr, "${rule.metric_function}(${rule.metric_name}${(rule.filters != null && length(rule.filters) > 0) ? format("{%s}", replace(join(", ", [for k, v in rule.filters : "${k}=\"${v}\""]), "\"", "\\\"")) : ""}${rule.metric_interval})")
+  }) if rule.folder_name == member] }
   comparison_operators = {
     gte : ">=",
     gt : ">",
@@ -28,8 +30,8 @@ resource "grafana_rule_group" "alert_rule" {
       name           = rule.value["name"]
       for            = "0"
       condition      = "C"
-      no_data_state  = "NoData"
-      exec_err_state = "Error"
+      no_data_state  = lookup(rule.value, "no_data_state", "NoData")
+      exec_err_state = lookup(rule.value, "exec_err_state", "Error")
       annotations = {
         "Managed By" = "Terraform"
         "Summary"    = lookup(rule.value, "summary", rule.value.name)
@@ -49,7 +51,7 @@ resource "grafana_rule_group" "alert_rule" {
         model          = <<EOT
 {
     "editorMode": "code",
-    "expr": "${rule.value.metric_function}(${rule.value.metric_name}${(rule.value.filters != null && length(rule.value.filters) > 0) ? format("{%s}", replace(join(", ", [for k, v in rule.value.filters : "${k}=\"${v}\""]), "\"", "\\\"")) : ""}${rule.value.metric_interval})",
+    "expr": "${rule.value.expr}",
     "hide": false,
     "intervalMs": "1000",
     "legendFormat": "__auto",
