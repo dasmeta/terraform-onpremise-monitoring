@@ -103,7 +103,11 @@ EOT
     "maxDataPoints": 43200,
     "reducer": "${rule.value.function}",
     "refId": "B",
-    "type": "reduce"
+    "type": "reduce",
+    "settings": {
+        "mode": "${rule.value.settings_mode}",
+        "replaceWithValue": ${rule.value.settings_replaceWith}
+    }
 }
 EOT
       }
