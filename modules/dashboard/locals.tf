@@ -1,0 +1,134 @@
+locals {
+  dashboard_title = var.name
+
+  # fill dashboard variable options and current required fields
+  grafana_templating_list_variables_options_fill = [for variable in var.variables : merge(variable, {
+    options = [for option in variable.options : merge(option, { text = coalesce(option.text, option.value) })]
+  })]
+  grafana_templating_list_variables = [for variable in local.grafana_templating_list_variables_options_fill : merge(variable, {
+    current = try(variable.options[index(variable.options.*.selected, true)], null)
+  })]
+
+
+  ## Blocks
+
+  # get all blocks and annotate
+  initial_blocks = [
+    for index1, block in var.rows : {
+      block : block,
+      index1 : index1,
+      type : replace(block.type, "block/", "")
+    } if strcontains(try(block.type, ""), "block/")
+  ]
+
+  # annotate each block type with subIndex
+  blocks_by_type = { for block_type in distinct([for block in local.initial_blocks : block.type]) :
+    block_type => [for index2, block in local.initial_blocks : merge(block, { index2 : index2 }) if strcontains(block.type, block_type)]
+  }
+
+  # bring all module results together
+  blocks_results = {
+    ingress = values(module.block_ingress).*.result
+    service = values(module.block_service).*.result
+    sla     = values(module.block_sla).*.result
+  }
+
+  blocks_by_type_results = concat([], [
+    for block_type, type_blocks in local.blocks_by_type : [
+      for index3, block in type_blocks : merge(block, { results : local.blocks_results[block.type][index3] }) if contains(keys(local.blocks_results), block.type)
+    ] if contains(keys(local.blocks_results), block_type)
+  ]...)
+
+  # inject block widgets into rows/panels listing in place of block/* definitions
+  rows = concat([], [
+    for index1, row in var.rows :
+    concat(strcontains(try(row.type, ""), "block/") ? [] : [row],
+      [
+        for item in local.blocks_by_type_results : item.results if item.index1 == index1
+    ]...)
+  ]...)
+
+
+  ## Widgets
+  # default values from module and provided from outside
+  widget_default_values = merge(
+    {
+      period            = 3 # in minutes
+      stat              = "Sum"
+      width             = 6
+      height            = 8
+      expressions       = []
+      yAxis             = { left = { min = 0 } }
+      data_source       = var.data_source
+      container         = "$container"
+      namespace         = "$namespace"
+      cluster           = "$cluster"
+      account_id        = null
+      region            = null
+      anomaly_detection = false
+      anomaly_deviation = 6
+    },
+    var.defaults
+  )
+
+  # this will walk through every widget and add row/column + merge with default values
+  widget_config_with_raw_column_data_and_defaults = [
+    for row_number, row in local.rows : [
+      for column_number, column in row : merge(
+        local.widget_default_values,
+        column,
+        {
+          row          = row_number,
+          column       = column_number,
+          row_count    = length(local.rows),
+          column_count = length(row)
+        }
+      )
+    ]
+  ]
+
+  # groups rows by widget type
+  widget_config = { for key, item in flatten(local.widget_config_with_raw_column_data_and_defaults) :
+    item.type => merge(
+      item,
+      # calculate coordinates based on defaults and row/column details
+      {
+        coordinates = {
+          x      = item.column * item.width
+          y      = item.row
+          width  = item.width
+          height = item.height
+        }
+      }
+  )... }
+
+  # combine results (last step)
+  widget_result = concat(
+    # Container widgets
+    values(module.container_cpu_widget).*.data,
+    values(module.container_memory_widget).*.data,
+    values(module.container_network_widget).*.data,
+    values(module.container_restarts_widget).*.data,
+    values(module.container_replicas_widget).*.data,
+    values(module.container_request_count_widget).*.data,
+    values(module.container_response_time_widget).*.data,
+
+    # Ingress widgets
+    values(module.ingress_connections_widget).*.data,
+    values(module.ingress_request_rate_widget).*.data,
+    values(module.ingress_request_count_widget).*.data,
+    values(module.ingress_response_time_widget).*.data,
+
+    # Text widgets
+    values(module.text_title).*.data,
+    values(module.text_title_with_link).*.data,
+    values(module.text_title_with_collapse).*.data,
+
+    # sla/slo/sli widgets
+    values(module.widget_sla_slo_sli_main).*.data,
+    values(module.widget_sla_slo_sli_latency).*.data,
+
+    # single widgets
+    values(module.widget_custom).*.data,
+  )
+}

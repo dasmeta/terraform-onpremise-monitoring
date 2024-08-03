@@ -1,4 +1,6 @@
 resource "grafana_notification_policy" "policy" {
+  count = var.notifications.policy != null ? 1 : 0
+
   contact_point   = var.notifications.contact_point
   group_by        = var.notifications.group_by
   group_interval  = var.notifications.group_interval
