@@ -14,7 +14,7 @@ output "result" {
       { type : "ingress/request-rate", by_host : true },
       { type : "ingress/response-time", by_host : true },
       { type : "ingress/request-count", by_host : true },
-      { type : "ingress/request-count", by_host : true, only_5xx: true }
+      { type : "ingress/request-count", by_host : true, only_5xx : true }
     ],
     [
       { type : "container/cpu", container : "controller", namespace : "ingress-nginx", width : 12 },
