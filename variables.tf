@@ -1,3 +1,41 @@
+# dashboard variables
+variable "name" {
+  type        = string
+  description = "Dashboard name"
+}
+
+variable "application_dashboard" {
+  type = object({
+    rows = optional(any, [])
+    data_source = object({ # global/default datasource, TODO: create datasource inside the module
+      uid  = string
+      type = optional(string, "prometheus")
+    })
+    variables = optional(list(object({ # Allows to define variables to be used in dashboard
+      name        = string
+      type        = optional(string, "custom")
+      hide        = optional(number, 0)
+      includeAll  = optional(bool, false)
+      multi       = optional(bool, false)
+      query       = optional(string, "")
+      queryValue  = optional(string, "")
+      skipUrlSync = optional(bool, false)
+      options = optional(list(object({
+        selected = optional(bool, false)
+        value    = string
+        text     = optional(string, null)
+      })), [])
+    })), [])
+  })
+  default = {
+    rows        = [],
+    data_source = null,
+    variables   = []
+  }
+  description = "Dashboard for monitoring applications"
+}
+
+# alerting variables
 variable "alert_interval_seconds" {
   type        = number
   default     = 10
@@ -25,7 +63,7 @@ variable "alert_rules" {
     threshold            = number                          # The value against which B blocks are compared in the math expression
   }))
   default     = []
-  description = "This varibale describes alert folders, groups and rules."
+  description = "This variable describes alert folders, groups and rules."
 }
 
 variable "slack_endpoints" {
