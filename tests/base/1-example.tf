@@ -32,4 +32,38 @@ module "this" {
       }
     ]
   }
+
+  alert_rules = [
+    {
+      "datasource" : "prometheus",
+      "equation" : "gt",
+      "expr" : "avg(increase(nginx_ingress_controller_request_duration_seconds_sum[3m])) / 10",
+      "filters" : null,
+      "folder_name" : "Nginx Alerts",
+      "function" : "mean",
+      "name" : "Latency",
+      "labels" : {
+        "priorityHigh" : "true",
+      }
+      "summary" : "Latency is higher than 3s",
+      "threshold" : 3
+    },
+  ]
+
+  notifications = {
+    "group_interval" : "1m",
+    "repeat_interval" : "1m",
+    "contact_point" : "Slack",
+    "policies" : [
+      {
+        "contact_point" : "OpsGenie",
+        "continue" : "true",
+        "matchers" : [{
+          "label" : "priorityHigh",
+          "match" : "=",
+          "value" : "true"
+        }]
+      },
+    ]
+  }
 }
