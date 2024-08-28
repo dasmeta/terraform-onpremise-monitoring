@@ -8,12 +8,16 @@ module "alerts" {
 module "contact_points" {
   source = "./modules/contact-points"
 
+  count = length(var.alert_rules) != 0 ? 1 : 0
+
   slack_endpoints    = var.slack_endpoints
   opsgenie_endpoints = var.opsgenie_endpoints
 }
 
 module "notifications" {
   source = "./modules/notifications"
+
+  count = length(var.alert_rules) != 0 ? 1 : 0
 
   notifications = var.notifications
 }
