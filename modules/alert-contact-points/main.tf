@@ -1,8 +1,9 @@
-//Slack Integration
+# Slack Integration
 resource "grafana_contact_point" "slack_contact_point" {
   for_each = { for cp in var.slack_endpoints : cp.name => cp }
 
-  name = each.key
+  name               = each.key
+  disable_provenance = var.disable_provenance
 
   slack {
     endpoint_url            = each.value.webhook_url
@@ -18,11 +19,12 @@ resource "grafana_contact_point" "slack_contact_point" {
   }
 }
 
-//OpsGenie Integration
+# OpsGenie Integration
 resource "grafana_contact_point" "opsgenie_contact_point" {
   for_each = { for cp in var.opsgenie_endpoints : cp.name => cp }
 
-  name = each.key
+  name               = each.key
+  disable_provenance = var.disable_provenance
 
   opsgenie {
     api_key                 = each.value.api_key
@@ -30,5 +32,24 @@ resource "grafana_contact_point" "opsgenie_contact_point" {
     message                 = each.value.message
     url                     = each.value.api_url
     disable_resolve_message = each.value.disable_resolve_message
+  }
+}
+
+
+# Webhook endpoints Integration
+resource "grafana_contact_point" "webhook_contact_point" {
+  for_each = { for cp in var.webhook_endpoints : cp.name => cp }
+
+  name               = each.key
+  disable_provenance = var.disable_provenance
+
+  webhook {
+    url                       = each.value.url
+    authorization_credentials = each.value.authorization_credentials
+    authorization_scheme      = each.value.authorization_scheme
+    basic_auth_password       = each.value.basic_auth_password
+    basic_auth_user           = each.value.basic_auth_user
+    disable_resolve_message   = each.value.disable_resolve_message
+    settings                  = each.value.settings
   }
 }
