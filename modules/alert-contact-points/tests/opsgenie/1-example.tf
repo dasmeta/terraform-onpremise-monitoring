@@ -3,13 +3,9 @@ module "this" {
 
   opsgenie_endpoints = [
     {
-      name       = "Dev OpsGenie"
-      api_key    = "asdARdszgads1235fsdad"
+      name       = "opsgenie"
+      api_key    = "xxxxxxxx"
       auto_close = true
-    },
-    {
-      name    = "Stage OpsGenie"
-      api_key = "werARdsswefazgads12dad"
     }
   ]
 }

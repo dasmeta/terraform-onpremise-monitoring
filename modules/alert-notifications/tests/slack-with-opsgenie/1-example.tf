@@ -2,20 +2,21 @@ module "this" {
   source = "../../"
 
   notifications = {
-    contact_point   = "Slack"
+    contact_point   = "slack"
     group_by        = ["alertname"]
-    group_interval  = "10m"
-    repeat_interval = "1h"
+    group_interval  = "1m"
+    repeat_interval = "1m"
 
-    policy = {
-      contact_point = "Opsgenie"
-      continue      = false
-
-      matcher = {
-        label = "priority"
-        match = "="
-        value = "P1"
+    policies = [
+      {
+        contact_point = "opsgenie"
+        matchers      = [{ label = "priority", match = "=", value = "P1" }]
+      },
+      {
+        contact_point = "slack"
       }
-    }
+    ]
   }
+
+  depends_on = [module.opsgenie_contact_points, module.slack_contact_points]
 }

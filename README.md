@@ -14,7 +14,7 @@ More parts are coming soon.
 ```hcl
 module "grafana_monitoring" {
   source  = "dasmeta/grafana/onpremise"
-  version = "1.2.0"
+  version = "1.7.0"
 
   name = "Test-dashboard"
 
@@ -50,161 +50,70 @@ module "grafana_monitoring" {
 }
 ```
 
-## Example for Alert Rules
+## Example for Alerts
 ```
 module "grafana_alerts" {
   source  = "dasmeta/grafana/onpremise//modules/alerts"
-  version = "1.0.0"
+  version = "1.7.0"
 
-  alert_rules = [
-    {
-      name        = "App_1 has 0 available replicas"
-      folder_name = "Replica Count"
-      datasource  = "prometheus"
-      metric_name = "kube_deployment_status_replicas_available"
-      filters = {
-        deployment = "app-1-microservice"
-      }
-      function  = "last"
-      equation = "lt"
-      threshold = 1
-    },
-    {
-      name        = "Nginx Expressions"
-      folder_name = "Nginx Expressions Group"
-      datasource  = "prometheus"
-      expr        = "sum(rate(nginx_ingress_controller_requests{status=~'5..'}[1m])) by (ingress,cluster) / sum(rate(nginx_ingress_controller_requests[1m]))by (ingress) * 100 > 5"
-      function    = "mean"
-      equation    = "gt"
-      threshold   = 2
-    },
-  ]
-}
-```
-
-## Example for Contact Points
-```
-module "grafana_contact_points" {
-  source  = "dasmeta/grafana/onpremise//modules/contact-points"
-
-  opsgenie_endpoints = [
-    {
-      name       = "Dev OpsGenie"
-      api_key    = "asdARdszgads1235fsdad"
-      auto_close = true
-    },
-    {
-      name    = "Stage OpsGenie"
-      api_key = "werARdsswefazgads12dad"
+  alerts = {
+    rules = [
+      {
+        name        = "App_1 has 0 available replicas"
+        folder_name = "Replica Count"
+        datasource  = "prometheus"
+        metric_name = "kube_deployment_status_replicas_available"
+        filters = {
+          deployment = "app-1-microservice"
+        }
+        function  = "last"
+        equation = "lt"
+        threshold = 1
+      },
+      {
+        name        = "Nginx Expressions"
+        folder_name = "Nginx Expressions Group"
+        datasource  = "prometheus"
+        expr        = "sum(rate(nginx_ingress_controller_requests{status=~'5..'}[1m])) by (ingress,cluster) / sum(rate(nginx_ingress_controller_requests[1m]))by (ingress) * 100 > 5"
+        function    = "mean"
+        equation    = "gt"
+        threshold   = 2
+      },
+    ]
+    contact_points = {
+      opsgenie = [
+        {
+          name       = "opsgenie"
+          api_key    = "xxxxxxxxxxxxxxxx"
+          auto_close = true
+        }
+      ]
+      slack = [
+        {
+          name        = "slack"
+          webhook_url = "https://hooks.slack.com/services/xxxxxxxxxxxxxxxx"
+        }
+      ]
     }
-  ]
-  slack_endpoints = [
-    {
-      name        = "Dev Notifications"
-      webhook_url = "https://hooks.slack.com/services/T6safsfFSF2352SFzdn"
-    }
-  ]
-}
-```
-
-## Example for Notifications
-```
-module "grafana_contact_points" {
-  source  = "dasmeta/grafana/onpremise//modules/notifications"
-
-  notifications = {
-    contact_point   = "Slack"
-    group_by        = ["alertname"]
-    group_interval  = "10m"
-    repeat_interval = "1h"
-
-    policy = {
-      contact_point = "Opsgenie"
-      continue      = false
-
-      matcher = {
-        label = "priority"
-        match = "="
-        value = "P1"
-      }
-    }
-  }
-}
-```
-
-## Example for all submodules together
-```
-module "grafana_alerts" {
-  source  = "dasmeta/grafana/onpremise"
-
-  alert_rules = [
-    {
-      name        = "App_1 has 0 available replicas"
-      folder_name = "Test"
-      datasource  = "prometheus"
-      metric_name = "kube_deployment_status_replicas_available"
-      filters = {
-        deployment = "app-1-microservice"
-      }
-      function  = "last"
-      equation = "lt"
-      threshold = 1
-    },
-    {
-      name        = "App_2 has 0 available replicas"
-      folder_name = "Test"
-      datasource  = "prometheus"
-      metric_name = "kube_deployment_status_replicas_available"
-      filters = {
-        deployment = "app-2-microservice"
-      }
-      function  = "last"
-      equation = "lt"
-      threshold = 1
-    }
-  ]
-
-  opsgenie_endpoints = [
-    {
-      name       = "Dev OpsGenie"
-      api_key    = "asdARdszgads1235fsdad"
-      auto_close = true
-    },
-    {
-      name    = "Stage OpsGenie"
-      api_key = "werARdsswefazgads12dad"
-    }
-  ]
-
-  slack_endpoints = [
-    {
-      name        = "Dev Notifications"
-      webhook_url = "https://hooks.slack.com/services/T6safsfFSF2352SFzdn"
-    }
-  ]
-
-  notifications = {
-    contact_point   = "Slack"
-    group_by        = ["alertname"]
-    group_interval  = "10m"
-    repeat_interval = "1h"
-
-    policy = {
-      contact_point = "Opsgenie"
-      continue      = false
-
-      matcher = {
-        label = "priority"
-        match = "="
-        value = "P1"
-      }
+    notifications = {
+      contact_point : "slack"
+      "policies" : [
+        {
+          contact_point : "opsgenie"
+          matchers : [{ label : "priority", match : "=", value : "P1" }]
+        },
+        {
+          "contact_point" : "slack"
+        }
+      ]
     }
   }
 }
 ```
 
 ## Usage
-Check `./tests`, `modules/alerts/tests`, `modules/contact-points/tests` and `modules/notifications/tests` folders to see more examples.
+Check `./tests`, `modules/alert-rules/tests`, `modules/alert-contact-points/tests` and `modules/alert-notifications/tests` folders to see more examples.
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
