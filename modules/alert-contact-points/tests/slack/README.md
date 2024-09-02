@@ -1,5 +1,7 @@
-# base
+## Slack Integration
+This test creates Slack Contact Point in Grafana to send the alert notifications to Slack.
 
+Slack authentication can be done using either a `token` and `recipient` or a `webhook`. Please provide one of these values in the example code.
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
@@ -16,7 +18,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_this"></a> [this](#module\_this) | ../.. | n/a |
+| <a name="module_this"></a> [this](#module\_this) | ../../ | n/a |
 
 ## Resources
 

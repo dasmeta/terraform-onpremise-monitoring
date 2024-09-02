@@ -14,7 +14,7 @@ More parts are coming soon.
 ```hcl
 module "grafana_monitoring" {
   source  = "dasmeta/grafana/onpremise"
-  version = "1.2.0"
+  version = "1.7.0"
 
   name = "Test-dashboard"
 
@@ -50,161 +50,70 @@ module "grafana_monitoring" {
 }
 ```
 
-## Example for Alert Rules
+## Example for Alerts
 ```
 module "grafana_alerts" {
   source  = "dasmeta/grafana/onpremise//modules/alerts"
-  version = "1.0.0"
+  version = "1.7.0"
 
-  alert_rules = [
-    {
-      name        = "App_1 has 0 available replicas"
-      folder_name = "Replica Count"
-      datasource  = "prometheus"
-      metric_name = "kube_deployment_status_replicas_available"
-      filters = {
-        deployment = "app-1-microservice"
-      }
-      function  = "last"
-      equation = "lt"
-      threshold = 1
-    },
-    {
-      name        = "Nginx Expressions"
-      folder_name = "Nginx Expressions Group"
-      datasource  = "prometheus"
-      expr        = "sum(rate(nginx_ingress_controller_requests{status=~'5..'}[1m])) by (ingress,cluster) / sum(rate(nginx_ingress_controller_requests[1m]))by (ingress) * 100 > 5"
-      function    = "mean"
-      equation    = "gt"
-      threshold   = 2
-    },
-  ]
-}
-```
-
-## Example for Contact Points
-```
-module "grafana_contact_points" {
-  source  = "dasmeta/grafana/onpremise//modules/contact-points"
-
-  opsgenie_endpoints = [
-    {
-      name       = "Dev OpsGenie"
-      api_key    = "asdARdszgads1235fsdad"
-      auto_close = true
-    },
-    {
-      name    = "Stage OpsGenie"
-      api_key = "werARdsswefazgads12dad"
+  alerts = {
+    rules = [
+      {
+        name        = "App_1 has 0 available replicas"
+        folder_name = "Replica Count"
+        datasource  = "prometheus"
+        metric_name = "kube_deployment_status_replicas_available"
+        filters = {
+          deployment = "app-1-microservice"
+        }
+        function  = "last"
+        equation = "lt"
+        threshold = 1
+      },
+      {
+        name        = "Nginx Expressions"
+        folder_name = "Nginx Expressions Group"
+        datasource  = "prometheus"
+        expr        = "sum(rate(nginx_ingress_controller_requests{status=~'5..'}[1m])) by (ingress,cluster) / sum(rate(nginx_ingress_controller_requests[1m]))by (ingress) * 100 > 5"
+        function    = "mean"
+        equation    = "gt"
+        threshold   = 2
+      },
+    ]
+    contact_points = {
+      opsgenie = [
+        {
+          name       = "opsgenie"
+          api_key    = "xxxxxxxxxxxxxxxx"
+          auto_close = true
+        }
+      ]
+      slack = [
+        {
+          name        = "slack"
+          webhook_url = "https://hooks.slack.com/services/xxxxxxxxxxxxxxxx"
+        }
+      ]
     }
-  ]
-  slack_endpoints = [
-    {
-      name        = "Dev Notifications"
-      webhook_url = "https://hooks.slack.com/services/T6safsfFSF2352SFzdn"
-    }
-  ]
-}
-```
-
-## Example for Notifications
-```
-module "grafana_contact_points" {
-  source  = "dasmeta/grafana/onpremise//modules/notifications"
-
-  notifications = {
-    contact_point   = "Slack"
-    group_by        = ["alertname"]
-    group_interval  = "10m"
-    repeat_interval = "1h"
-
-    policy = {
-      contact_point = "Opsgenie"
-      continue      = false
-
-      matcher = {
-        label = "priority"
-        match = "="
-        value = "P1"
-      }
-    }
-  }
-}
-```
-
-## Example for all submodules together
-```
-module "grafana_alerts" {
-  source  = "dasmeta/grafana/onpremise"
-
-  alert_rules = [
-    {
-      name        = "App_1 has 0 available replicas"
-      folder_name = "Test"
-      datasource  = "prometheus"
-      metric_name = "kube_deployment_status_replicas_available"
-      filters = {
-        deployment = "app-1-microservice"
-      }
-      function  = "last"
-      equation = "lt"
-      threshold = 1
-    },
-    {
-      name        = "App_2 has 0 available replicas"
-      folder_name = "Test"
-      datasource  = "prometheus"
-      metric_name = "kube_deployment_status_replicas_available"
-      filters = {
-        deployment = "app-2-microservice"
-      }
-      function  = "last"
-      equation = "lt"
-      threshold = 1
-    }
-  ]
-
-  opsgenie_endpoints = [
-    {
-      name       = "Dev OpsGenie"
-      api_key    = "asdARdszgads1235fsdad"
-      auto_close = true
-    },
-    {
-      name    = "Stage OpsGenie"
-      api_key = "werARdsswefazgads12dad"
-    }
-  ]
-
-  slack_endpoints = [
-    {
-      name        = "Dev Notifications"
-      webhook_url = "https://hooks.slack.com/services/T6safsfFSF2352SFzdn"
-    }
-  ]
-
-  notifications = {
-    contact_point   = "Slack"
-    group_by        = ["alertname"]
-    group_interval  = "10m"
-    repeat_interval = "1h"
-
-    policy = {
-      contact_point = "Opsgenie"
-      continue      = false
-
-      matcher = {
-        label = "priority"
-        match = "="
-        value = "P1"
-      }
+    notifications = {
+      contact_point : "slack"
+      "policies" : [
+        {
+          contact_point : "opsgenie"
+          matchers : [{ label : "priority", match : "=", value : "P1" }]
+        },
+        {
+          "contact_point" : "slack"
+        }
+      ]
     }
   }
 }
 ```
 
 ## Usage
-Check `./tests`, `modules/alerts/tests`, `modules/contact-points/tests` and `modules/notifications/tests` folders to see more examples.
+Check `./tests`, `modules/alert-rules/tests`, `modules/alert-contact-points/tests` and `modules/alert-notifications/tests` folders to see more examples.
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
@@ -223,8 +132,6 @@ No providers.
 |------|--------|---------|
 | <a name="module_alerts"></a> [alerts](#module\_alerts) | ./modules/alerts | n/a |
 | <a name="module_application_dashboard"></a> [application\_dashboard](#module\_application\_dashboard) | ./modules/dashboard/ | n/a |
-| <a name="module_contact_points"></a> [contact\_points](#module\_contact\_points) | ./modules/contact-points | n/a |
-| <a name="module_notifications"></a> [notifications](#module\_notifications) | ./modules/notifications | n/a |
 
 ## Resources
 
@@ -234,13 +141,9 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_alert_interval_seconds"></a> [alert\_interval\_seconds](#input\_alert\_interval\_seconds) | The interval, in seconds, at which all rules in the group are evaluated. If a group contains many rules, the rules are evaluated sequentially. | `number` | `10` | no |
-| <a name="input_alert_rules"></a> [alert\_rules](#input\_alert\_rules) | This variable describes alert folders, groups and rules. | <pre>list(object({<br>    name                 = string                     # The name of the alert rule<br>    no_data_state        = optional(string, "NoData") # Describes what state to enter when the rule's query returns No Data<br>    exec_err_state       = optional(string, "Error")  # Describes what state to enter when the rule's query is invalid and the rule cannot be executed<br>    summary              = optional(string, "")       # Rule annotation as a summary<br>    labels               = optional(map(any), { "priorityLow" : "true" })<br>    folder_name          = optional(string, "Main Alerts") # Grafana folder name in which the rule will be created<br>    datasource           = string                          # Name of the datasource used for the alert<br>    expr                 = optional(string, null)          # Full expression for the alert<br>    metric_name          = optional(string, "")            # Prometheus metric name which queries the data for the alert<br>    metric_function      = optional(string, "")            # Prometheus function used with metric for queries, like rate, sum etc.<br>    metric_interval      = optional(string, "")            # The time interval with using functions like rate<br>    settings_mode        = optional(string, "replaceNN")   # The mode used in B block, possible values are Strict, replaceNN, dropNN<br>    settings_replaceWith = optional(number, 0)             # The value by which NaN results of the query will be replaced<br>    filters              = optional(any, {})               # Filters object to identify each service for alerting<br>    function             = optional(string, "mean")        # One of Reduce functions which will be used in B block for alerting<br>    equation             = string                          # The equation in the math expression which compares B blocks value with a number and generates an alert if needed. Possible values: gt, lt, gte, lte, e<br>    threshold            = number                          # The value against which B blocks are compared in the math expression<br>  }))</pre> | `[]` | no |
+| <a name="input_alerts"></a> [alerts](#input\_alerts) | n/a | <pre>object({<br>    alert_interval_seconds = optional(number, 10) # The interval, in seconds, at which all rules in the group are evaluated. If a group contains many rules, the rules are evaluated sequentially<br>    disable_provenance     = optional(bool, true) # Allow modifying resources from other sources than Terraform or the Grafana API<br>    rules = optional(                             # Describes alert folders, groups and rules<br>      list(object({<br>        name                 = string                                    # The name of the alert rule<br>        no_data_state        = optional(string, "NoData")                # Describes what state to enter when the rule's query returns No Data<br>        exec_err_state       = optional(string, "Error")                 # Describes what state to enter when the rule's query is invalid and the rule cannot be executed<br>        summary              = optional(string, null)                    # Rule annotation as a summary, if not passed automatically generated based on data<br>        labels               = optional(map(any), { "priority" : "P1" }) # Labels help to define matchers in notification policy to control where to send each alert<br>        folder_name          = optional(string, "Main Alerts")           # Grafana folder name in which the rule will be created, the folder name used also as alert group name with suffix " Group"<br>        datasource           = string                                    # Name of the datasource used for the alert<br>        expr                 = optional(string, null)                    # Full expression for the alert<br>        metric_name          = optional(string, "")                      # Prometheus metric name which queries the data for the alert<br>        metric_function      = optional(string, "")                      # Prometheus function used with metric for queries, like rate, sum etc.<br>        metric_interval      = optional(string, "")                      # The time interval with using functions like rate<br>        settings_mode        = optional(string, "replaceNN")             # The mode used in B block, possible values are Strict, replaceNN, dropNN<br>        settings_replaceWith = optional(number, 0)                       # The value by which NaN results of the query will be replaced<br>        filters              = optional(any, null)                       # Filters object to identify each service for alerting<br>        function             = optional(string, "mean")                  # One of Reduce functions which will be used in B block for alerting<br>        equation             = string                                    # The equation in the math expression which compares B blocks value with a number and generates an alert if needed. Possible values: gt, lt, gte, lte, e<br>        threshold            = number                                    # The value against which B blocks are compared in the math expression<br>    })), [])<br>    contact_points = optional(object({<br>      slack = optional(list(object({                                                         # Slack contact points list<br>        name                    = string                                                     # The name of the contact point<br>        endpoint_url            = optional(string, "https://slack.com/api/chat.postMessage") # Use this to override the Slack API endpoint URL to send requests to<br>        icon_emoji              = optional(string, "")                                       # The name of a Slack workspace emoji to use as the bot icon<br>        icon_url                = optional(string, "")                                       # A URL of an image to use as the bot icon<br>        recipient               = optional(string, null)                                     # Channel, private group, or IM channel (can be an encoded ID or a name) to send messages to<br>        text                    = optional(string, "")                                       # Templated content of the message<br>        title                   = optional(string, "")                                       # Templated title of the message<br>        token                   = optional(string, "")                                       # A Slack API token,for sending messages directly without the webhook method<br>        webhook_url             = optional(string, "")                                       # A Slack webhook URL,for sending messages via the webhook method<br>        username                = optional(string, "")                                       # Username for the bot to use<br>        disable_resolve_message = optional(bool, false)                                      # Whether to disable sending resolve messages<br>      })), [])<br>      opsgenie = optional(list(object({                                                  # OpsGenie contact points list<br>        name                    = string                                                 # The name of the contact point<br>        api_key                 = string                                                 # The OpsGenie API key to use<br>        auto_close              = optional(bool, false)                                  # Whether to auto-close alerts in OpsGenie when they resolve in the Alert manager<br>        message                 = optional(string, "")                                   # The templated content of the message<br>        api_url                 = optional(string, "https://api.opsgenie.com/v2/alerts") # Allows customization of the OpsGenie API URL<br>        disable_resolve_message = optional(bool, false)                                  # Whether to disable sending resolve messages<br>      })), [])<br>      webhook = optional(list(object({                     # Contact points that send notifications to an arbitrary webhook, using the Prometheus webhook format<br>        name                      = string                 # The name of the contact point<br>        url                       = string                 # The URL to send webhook requests to<br>        authorization_credentials = optional(string, null) # Allows a custom authorization scheme - attaches an auth header with this value. Do not use in conjunction with basic auth parameters<br>        authorization_scheme      = optional(string, null) # Allows a custom authorization scheme - attaches an auth header with this name. Do not use in conjunction with basic auth parameters<br>        basic_auth_password       = optional(string, null) # The password component of the basic auth credentials to use<br>        basic_auth_user           = optional(string, null) # The username component of the basic auth credentials to use<br>        disable_resolve_message   = optional(bool, false)  # Whether to disable sending resolve messages. Defaults to<br>        settings                  = optional(any, null)    # Additional custom properties to attach to the notifier<br>      })), [])<br>    }), null)<br>    notifications = optional(object({<br>      contact_point   = optional(string, "Slack")       # The default contact point to route all unmatched notifications to<br>      group_by        = optional(list(string), ["..."]) # A list of alert labels to group alerts into notifications by<br>      group_interval  = optional(string, "5m")          # Minimum time interval between two notifications for the same group<br>      repeat_interval = optional(string, "4h")          # Minimum time interval for re-sending a notification if an alert is still firing<br><br>      mute_timing = optional(object({                  # Mute timing config, which will be applied on all policies<br>        name = optional(string, "Default mute timing") # the name of mute timing<br>        intervals = optional(list(object({             # the mute timing interval configs<br>          weekdays      = optional(string, null)<br>          days_of_month = optional(string, null)<br>          months        = optional(string, null)<br>          years         = optional(string, null)<br>          location      = optional(string, null)<br>          times = optional(object({<br>            start = optional(string, "00:00")<br>            end   = optional(string, "24:59")<br>          }), null)<br>        })), [])<br>      }), null)<br><br>      policies = optional(list(object({<br>        contact_point = optional(string, null) # The contact point to route notifications that match this rule to<br>        continue      = optional(bool, true)   # Whether to continue matching subsequent rules if an alert matches the current rule. Otherwise, the rule will be 'consumed' by the first policy to match it<br>        group_by      = optional(list(string), ["..."])<br><br>        matchers = optional(list(object({<br>          label = optional(string, "priority") # The name of the label to match against<br>          match = optional(string, "=")        # The operator to apply when matching values of the given label. Allowed operators are = for equality, != for negated equality, =~ for regex equality, and !~ for negated regex equality<br>          value = optional(string, "P1")       # The label value to match against<br>        })), [])<br>        policies = optional(list(object({ # sub-policies(there is also possibility to implement also ability for sub.sub.sub-policies, but for not seems existing configs are enough)<br>          contact_point = optional(string, null)<br>          continue      = optional(bool, true)<br>          group_by      = optional(list(string), ["..."])<br>          mute_timings  = optional(list(string), [])<br><br>          matchers = optional(list(object({<br>            label = optional(string, "priority")<br>            match = optional(string, "=")<br>            value = optional(string, "P1")<br>          })), [])<br>        })), [])<br>      })), [])<br>    }), null)<br>  })</pre> | `{}` | no |
 | <a name="input_application_dashboard"></a> [application\_dashboard](#input\_application\_dashboard) | Dashboard for monitoring applications | <pre>object({<br>    rows = optional(any, [])<br>    data_source = object({ # global/default datasource, TODO: create datasource inside the module<br>      uid  = string<br>      type = optional(string, "prometheus")<br>    })<br>    variables = optional(list(object({ # Allows to define variables to be used in dashboard<br>      name        = string<br>      type        = optional(string, "custom")<br>      hide        = optional(number, 0)<br>      includeAll  = optional(bool, false)<br>      multi       = optional(bool, false)<br>      query       = optional(string, "")<br>      queryValue  = optional(string, "")<br>      skipUrlSync = optional(bool, false)<br>      options = optional(list(object({<br>        selected = optional(bool, false)<br>        value    = string<br>        text     = optional(string, null)<br>      })), [])<br>    })), [])<br>  })</pre> | <pre>{<br>  "data_source": null,<br>  "rows": [],<br>  "variables": []<br>}</pre> | no |
 | <a name="input_name"></a> [name](#input\_name) | Dashboard name | `string` | n/a | yes |
-| <a name="input_notifications"></a> [notifications](#input\_notifications) | Represents the configuration options for Grafana notification policies. | <pre>object({<br>    contact_point   = optional(string, "Slack")       # The default contact point to route all unmatched notifications to.<br>    group_by        = optional(list(string), ["..."]) # A list of alert labels to group alerts into notifications by.<br>    group_interval  = optional(string, "5m")          # Minimum time interval between two notifications for the same group.<br>    repeat_interval = optional(string, "4h")          # Minimum time interval for re-sending a notification if an alert is still firing.<br><br>    policies = optional(list(object({<br>      contact_point = optional(string, null) # The contact point to route notifications that match this rule to.<br>      continue      = optional(bool, false)  # Whether to continue matching subsequent rules if an alert matches the current rule. Otherwise, the rule will be 'consumed' by the first policy to match it.<br>      group_by      = optional(list(string), ["..."])<br>      mute_timings  = optional(list(string), []) # A list of mute timing names to apply to alerts that match this policy.<br><br>      matchers = optional(list(object({<br>        label = optional(string, "priority") # The name of the label to match against.<br>        match = optional(string, "=")        # The operator to apply when matching values of the given label. Allowed operators are = for equality, != for negated equality, =~ for regex equality, and !~ for negated regex equality.<br>        value = optional(string, "P1")       # The label value to match against.<br>      })), [])<br>    })), [])<br>  })</pre> | `{}` | no |
-| <a name="input_opsgenie_endpoints"></a> [opsgenie\_endpoints](#input\_opsgenie\_endpoints) | OpsGenie contact points list. | <pre>list(object({<br>    name                    = string                                                 # The name of the contact point.<br>    api_key                 = string                                                 # The OpsGenie API key to use.<br>    auto_close              = optional(bool, false)                                  # Whether to auto-close alerts in OpsGenie when they resolve in the Alertmanager.<br>    message                 = optional(string, "")                                   # The templated content of the message.<br>    api_url                 = optional(string, "https://api.opsgenie.com/v2/alerts") # Allows customization of the OpsGenie API URL.<br>    disable_resolve_message = optional(bool, false)                                  # Whether to disable sending resolve messages.<br>  }))</pre> | `[]` | no |
-| <a name="input_slack_endpoints"></a> [slack\_endpoints](#input\_slack\_endpoints) | Slack contact points list. | <pre>list(object({<br>    name                    = string                                                     # The name of the contact point.<br>    endpoint_url            = optional(string, "https://slack.com/api/chat.postMessage") # Use this to override the Slack API endpoint URL to send requests to.<br>    icon_emoji              = optional(string, "")                                       # The name of a Slack workspace emoji to use as the bot icon.<br>    icon_url                = optional(string, "")                                       # A URL of an image to use as the bot icon.<br>    recipient               = optional(string, null)                                     # Channel, private group, or IM channel (can be an encoded ID or a name) to send messages to.<br>    text                    = optional(string, "")                                       # Templated content of the message.<br>    title                   = optional(string, "")                                       # Templated title of the message.<br>    token                   = optional(string, "")                                       # A Slack API token,for sending messages directly without the webhook method.<br>    webhook_url             = optional(string, "")                                       # A Slack webhook URL,for sending messages via the webhook method.<br>    username                = optional(string, "")                                       # Username for the bot to use.<br>    disable_resolve_message = optional(bool, false)                                      # Whether to disable sending resolve messages.<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

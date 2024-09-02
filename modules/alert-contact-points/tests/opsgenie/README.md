@@ -1,5 +1,7 @@
-# base
+## OpsGenie Integration
+This test creates OpsGenie Contact Point in Grafana to send the alert notifications to OpsGenie.
 
+OpsGenie authentication can be done using OpsGenie API Key by passing the value to `api_key`.
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
@@ -16,7 +18,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_this"></a> [this](#module\_this) | ../.. | n/a |
+| <a name="module_this"></a> [this](#module\_this) | ../../ | n/a |
 
 ## Resources
 

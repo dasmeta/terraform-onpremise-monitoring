@@ -1,5 +1,5 @@
-# base
-
+## Slack
+This example creates a default notification policy for the Slack contact point.
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
@@ -16,7 +16,8 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_this"></a> [this](#module\_this) | ../.. | n/a |
+| <a name="module_contact_points"></a> [contact\_points](#module\_contact\_points) | ../../../alert-contact-points/tests/slack | n/a |
+| <a name="module_this"></a> [this](#module\_this) | ../../ | n/a |
 
 ## Resources
 

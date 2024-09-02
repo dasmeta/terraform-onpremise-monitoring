@@ -1,5 +1,5 @@
-# base
-
+## Mixed Contact Points
+This test creates multiple contact points which have different types of integration.
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
@@ -16,7 +16,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_this"></a> [this](#module\_this) | ../.. | n/a |
+| <a name="module_this"></a> [this](#module\_this) | ../../ | n/a |
 
 ## Resources
 
