@@ -35,6 +35,20 @@ variable "opsgenie_endpoints" {
   description = "OpsGenie contact points list."
 }
 
+variable "teams_endpoints" {
+  type = list(object({
+    name                    = string                # The name of the contact point
+    url                     = string                # The MS Teams Webhook URL to use
+    auto_close              = optional(bool, false) # Whether to auto-close alerts in OpsGenie when they resolve in the Alert manager
+    message                 = optional(string, "")  # The templated content of the message
+    disable_resolve_message = optional(bool, false) # Whether to disable sending resolve messages
+    section_title           = optional(string, "")  # The templated subtitle for each message section.
+    title                   = optional(string, "")  # The templated title of the message
+  }))
+  default     = []
+  description = "OpsGenie contact points list."
+}
+
 variable "webhook_endpoints" {
   type = list(object({
     name                      = string                 # The name of the contact point

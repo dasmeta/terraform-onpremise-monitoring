@@ -35,6 +35,22 @@ resource "grafana_contact_point" "opsgenie_contact_point" {
   }
 }
 
+# MS Teams Integration
+resource "grafana_contact_point" "teams_contact_point" {
+  for_each = { for cp in var.teams_endpoints : cp.name => cp }
+
+  name               = each.key
+  disable_provenance = var.disable_provenance
+
+  teams {
+    title                   = each.value.title
+    url                     = each.value.url
+    message                 = each.value.message
+    section_title           = each.value.section_title
+    disable_resolve_message = each.value.disable_resolve_message
+  }
+}
+
 
 # Webhook endpoints Integration
 resource "grafana_contact_point" "webhook_contact_point" {
