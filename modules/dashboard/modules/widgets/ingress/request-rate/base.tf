@@ -15,9 +15,11 @@ module "base" {
   }
 
   metrics = var.by_host ? [
-    { label : "__auto", expression : "sum(rate(nginx_ingress_controller_requests[${var.period}m])) by (host)" },
+    { label : "__auto", color : "3ECE76", expression : "sum(rate(nginx_ingress_controller_requests[${var.period}m])) by (host)" },
     ] : [
-    { label : "1m range", expression : "sum(rate(nginx_ingress_controller_requests[1m]))" },
-    { label : "${var.period}m range", expression : "sum(rate(nginx_ingress_controller_requests[${var.period}m]))" }
+    { label : "1m", color : "FFC300", expression : "sum(rate(nginx_ingress_controller_requests[1m]))" },
+    { label : "5m", color : "FF774D", expression : "sum(rate(nginx_ingress_controller_requests[5m]))" },
+    { label : "15m", color : "FF0F3C", expression : "sum(rate(nginx_ingress_controller_requests[15m]))" },
+    { label : "${var.period}m range", color : "56F3D7", expression : "sum(rate(nginx_ingress_controller_requests[${var.period}m]))" }
   ]
 }
