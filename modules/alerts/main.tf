@@ -16,6 +16,7 @@ module "contact_points" {
   disable_provenance = var.disable_provenance
   slack_endpoints    = var.contact_points.slack
   opsgenie_endpoints = var.contact_points.opsgenie
+  teams_endpoints    = var.contact_points.teams
   webhook_endpoints  = var.contact_points.webhook
 }
 
