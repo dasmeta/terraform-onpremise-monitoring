@@ -57,10 +57,9 @@ variable "contact_points" {
       api_url                 = optional(string, "https://api.opsgenie.com/v2/alerts") # Allows customization of the OpsGenie API URL
       disable_resolve_message = optional(bool, false)                                  # Whether to disable sending resolve messages
     })), [])
-    teams = optional(list(object({                    # OpsGenie contact points list
+    teams = optional(list(object({                    # Teams contact points list
       name                    = string                # The name of the contact point
       url                     = string                # The MS Teams Webhook URL to use
-      auto_close              = optional(bool, false) # Whether to auto-close alerts in OpsGenie when they resolve in the Alert manager
       message                 = optional(string, "")  # The templated content of the message
       disable_resolve_message = optional(bool, false) # Whether to disable sending resolve messages
       section_title           = optional(string, "")  # The templated subtitle for each message section.
