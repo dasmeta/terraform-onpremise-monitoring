@@ -46,7 +46,27 @@ locals {
         },
       ]
     }
+    unit = var.unit
   }
+
+  field_config_overrides = [
+    for metric in local.metrics_with_defaults : {
+      matcher = {
+        id      = "byName"
+        options = metric.label
+      }
+      properties = [
+        {
+          id = "color"
+          value = {
+            mode       = "fixed"
+            fixedColor = format("#%s", metric.color)
+          }
+        }
+      ]
+    } if metric.color != null
+  ]
+
 
   common_fields    = ["MetricNamespace", "MetricName"]
   attribute_fields = ["accountId", "period", "stat", "label", "visible", "color", "yAxis"]
@@ -54,7 +74,9 @@ locals {
   metrics_local    = var.metrics == null ? [] : var.metrics
 
   # merge metrics with defaults
-  metrics_with_defaults = [for metric in local.metrics_local : merge(var.defaults, metric)]
+  metrics_with_defaults = [for metric in local.metrics_local : merge(var.defaults, metric, {
+    color = lookup(metric, "color", null)
+  })]
 
   type_map = {
     timeSeries = "timeseries"
@@ -95,10 +117,11 @@ locals {
   }]
 
   data = {
-    datasource = var.data_source
+    datasource  = var.data_source
+    description = var.description
     fieldConfig = {
       defaults  = local.field_config_defaults
-      overrides = []
+      overrides = local.field_config_overrides
     }
     gridPos = {
       h = var.coordinates.height
@@ -110,13 +133,14 @@ locals {
     type  = try(local.type_map[var.view], local.type_map.timeSeries)
     options = {
       legend = {
-        calcs       = []
-        displayMode = "list"
-        placement   = "bottom"
+        calcs       = lookup(var.options.legend, "calcs", [])
+        displayMode = lookup(var.options.legend, "displayMode", "list")
+        placement   = lookup(var.options.legend, "placement", "bottom")
+        showLegend  = lookup(var.options.legend, "show_legend", true)
       }
       tooltip = {
-        mode = "single"
-        sort = "none"
+        mode = lookup(var.options.tooltip, "mode", "single")
+        sort = lookup(var.options.tooltip, "sort", "none")
       }
     }
     targets = concat(local.query_targets, local.metric_targets)

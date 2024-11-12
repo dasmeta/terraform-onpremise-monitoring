@@ -11,6 +11,15 @@ variable "ingress_type" {
   default = "nginx"
 }
 
+variable "pod" {
+  type = string
+}
+
+variable "namespace" {
+  type    = string
+  default = "default"
+}
+
 variable "account_id" {
   type    = string
   default = null
@@ -35,26 +44,6 @@ variable "coordinates" {
 variable "period" {
   type    = number
   default = 3
-}
-
-variable "only_5xx" {
-  type    = bool
-  default = false
-}
-
-variable "by_host" {
-  type    = bool
-  default = false
-}
-
-variable "by_path" {
-  type    = bool
-  default = false
-}
-
-variable "by_status_path" {
-  type    = bool
-  default = false
 }
 
 variable "anomaly_detection" {

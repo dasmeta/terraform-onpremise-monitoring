@@ -11,16 +11,13 @@ variable "ingress_type" {
   default = "nginx"
 }
 
-variable "problem" {
-  type        = number
-  default     = 2
-  description = "The number which indicates the max timeout above which we have problem"
+variable "pod" {
+  type = string
 }
 
-variable "acceptable" {
-  type        = number
-  default     = 1
-  description = "The number which indicates the acceptable timeout"
+variable "namespace" {
+  type    = string
+  default = "default"
 }
 
 variable "account_id" {
@@ -47,11 +44,6 @@ variable "coordinates" {
 variable "period" {
   type    = number
   default = 3
-}
-
-variable "by_host" {
-  type    = bool
-  default = false
 }
 
 variable "anomaly_detection" {

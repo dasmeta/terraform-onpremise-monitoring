@@ -31,11 +31,13 @@ No resources.
 | <a name="input_data_source"></a> [data\_source](#input\_data\_source) | The custom datasource for widget item | <pre>object({<br>    uid  = optional(string, null)<br>    type = optional(string, "prometheus")<br>  })</pre> | n/a | yes |
 | <a name="input_decimals"></a> [decimals](#input\_decimals) | The decimals to enable on numbers | `number` | `0` | no |
 | <a name="input_defaults"></a> [defaults](#input\_defaults) | Default values that will be passed to all metrics. | `any` | `{}` | no |
+| <a name="input_description"></a> [description](#input\_description) | Description for the widget | `string` | `""` | no |
 | <a name="input_end"></a> [end](#input\_end) | end of widget | `string` | `null` | no |
 | <a name="input_expressions"></a> [expressions](#input\_expressions) | Custom metric expressions over metrics, note that metrics have auto generated m1,m2,..., m{n} ids | <pre>list(object({<br>    expression = string<br>    label      = optional(string, null)<br>    accountId  = optional(string, null)<br>    visible    = optional(bool, null)<br>    color      = optional(string, null)<br>    yAxis      = optional(string, null)<br>    region     = optional(string, null)<br>    id         = optional(string, null)<br>  }))</pre> | `[]` | no |
 | <a name="input_fillOpacity"></a> [fillOpacity](#input\_fillOpacity) | The fillOpacity value | `number` | `0` | no |
 | <a name="input_metrics"></a> [metrics](#input\_metrics) | Metrics to be displayed on the widget. | `any` | `[]` | no |
 | <a name="input_name"></a> [name](#input\_name) | n/a | `string` | n/a | yes |
+| <a name="input_options"></a> [options](#input\_options) | Configuration options for widget legend and tooltip. | <pre>object({<br>    legend = object({<br>      calcs       = optional(list(string), [])<br>      displayMode = optional(string, "list")<br>      placement   = optional(string, "bottom")<br>      show_legend = optional(bool, true)<br>    })<br>    tooltip = optional(object({<br>      mode = optional(string, "single")<br>      sort = optional(string, "none")<br>    }), {})<br>  })</pre> | <pre>{<br>  "legend": {<br>    "calcs": [],<br>    "displayMode": "list",<br>    "placement": "bottom",<br>    "show_legend": true<br>  },<br>  "tooltip": {<br>    "mode": "single",<br>    "sort": "none"<br>  }<br>}</pre> | no |
 | <a name="input_period"></a> [period](#input\_period) | n/a | `number` | `3` | no |
 | <a name="input_properties_type"></a> [properties\_type](#input\_properties\_type) | The properties->type option for alarm widgets | `string` | `null` | no |
 | <a name="input_query"></a> [query](#input\_query) | The Logs Insights complete build query without sources and other options(in case of metric) query | `string` | `null` | no |
@@ -49,6 +51,7 @@ No resources.
 | <a name="input_stat"></a> [stat](#input\_stat) | n/a | `string` | `"Average"` | no |
 | <a name="input_trend"></a> [trend](#input\_trend) | trend of widget | `bool` | `null` | no |
 | <a name="input_type"></a> [type](#input\_type) | The type of widget to be prepared | `string` | `"metric"` | no |
+| <a name="input_unit"></a> [unit](#input\_unit) | Unit used for widget metric | `string` | `""` | no |
 | <a name="input_view"></a> [view](#input\_view) | The view for log insights and alarm widgets | `string` | `null` | no |
 | <a name="input_yAxis"></a> [yAxis](#input\_yAxis) | Widget Item common yAxis option (applied only metric type widgets). | `any` | <pre>{<br>  "left": {}<br>}</pre> | no |
 

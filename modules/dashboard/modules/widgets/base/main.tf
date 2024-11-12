@@ -2,6 +2,7 @@ module "base_grafana" {
   source = "./platforms/grafana"
 
   name              = var.name
+  description       = var.description
   data_source       = var.data_source
   coordinates       = var.coordinates
   metrics           = var.metrics
@@ -19,5 +20,7 @@ module "base_grafana" {
   alarms            = var.alarms
   properties_type   = var.properties_type
   decimals          = var.decimals
+  unit              = var.unit
   fillOpacity       = var.fillOpacity
+  options           = var.options
 }

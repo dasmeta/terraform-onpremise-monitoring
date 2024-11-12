@@ -7,18 +7,23 @@ output "result" {
     [
       { type : "ingress/request-rate" },
       { type : "ingress/connections" },
-      { type : "ingress/response-time" },
-      { type : "ingress/request-count" }
+      { type : "ingress/latency" },
+      { type : "ingress/latency", by_host : true },
     ],
     [
-      { type : "ingress/request-rate", by_host : true },
-      { type : "ingress/response-time", by_host : true },
-      { type : "ingress/request-count", by_host : true },
-      { type : "ingress/request-count", by_host : true, only_5xx : true }
+      { type : "ingress/request-count" },
+      { type : "ingress/request-count", only_5xx : true },
+      { type : "ingress/request-count", only_5xx : true, by_path : true },
+      { type : "ingress/request-count", only_5xx : true, by_status_path : true },
     ],
     [
-      { type : "container/cpu", container : "controller", namespace : "ingress-nginx", width : 12 },
-      { type : "container/memory", container : "controller", namespace : "ingress-nginx", width : 12 }
+      { type : "ingress/cpu", pod : "nginx-ingress", namespace : "ingress-nginx", width : 4, },
+      { type : "ingress/memory", pod : "nginx-ingress", namespace : "ingress-nginx", width : 4, },
+      { type : "container/network-traffic", pod : "nginx-ingress", width : 4 },
+      { type : "container/network-transmit", pod : "nginx-ingress", width : 4 },
+      # { type : "logs/count", aggregated_metric : "controller"},
+      # { type : "logs/error-rate", aggregated_metric : "controller"},
+      # { type : "logs/warning-rate", aggregated_metric : "controller"},
     ],
   ]
 }

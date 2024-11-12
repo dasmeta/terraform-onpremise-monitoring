@@ -142,3 +142,37 @@ module "container_response_time_widget" {
   anomaly_detection = each.value.anomaly_detection
   anomaly_deviation = each.value.anomaly_deviation
 }
+
+module "container_network_traffic_widget" {
+  source = "./modules/widgets/container/network-traffic"
+
+  for_each = { for index, item in try(local.widget_config["container/network-traffic"], []) : index => item }
+
+  data_source = each.value.data_source
+  coordinates = each.value.coordinates
+  period      = each.value.period
+
+  pod = each.value.pod
+
+  account_id        = each.value.account_id
+  region            = each.value.region
+  anomaly_detection = each.value.anomaly_detection
+  anomaly_deviation = each.value.anomaly_deviation
+}
+
+module "container_network_transmit_widget" {
+  source = "./modules/widgets/container/network-transmit"
+
+  for_each = { for index, item in try(local.widget_config["container/network-transmit"], []) : index => item }
+
+  data_source = each.value.data_source
+  coordinates = each.value.coordinates
+  period      = each.value.period
+
+  pod = each.value.pod
+
+  account_id        = each.value.account_id
+  region            = each.value.region
+  anomaly_detection = each.value.anomaly_detection
+  anomaly_deviation = each.value.anomaly_deviation
+}
