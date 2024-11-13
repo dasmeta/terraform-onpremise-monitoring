@@ -6,9 +6,17 @@ variable "data_source" {
   description = "The custom datasource for widget item"
 }
 
-variable "ingress_type" {
+variable "pod" {
+  type = string
+}
+
+variable "cluster" {
+  type = string
+}
+
+variable "namespace" {
   type    = string
-  default = "nginx"
+  default = "default"
 }
 
 variable "account_id" {
@@ -34,25 +42,10 @@ variable "coordinates" {
 # stats
 variable "period" {
   type    = number
-  default = 3
+  default = 60
 }
 
-variable "only_5xx" {
-  type    = bool
-  default = false
-}
-
-variable "by_host" {
-  type    = bool
-  default = false
-}
-
-variable "by_path" {
-  type    = bool
-  default = false
-}
-
-variable "by_status_path" {
+variable "by_pod" {
   type    = bool
   default = false
 }

@@ -53,10 +53,10 @@ locals {
   # default values from module and provided from outside
   widget_default_values = merge(
     {
-      period            = 3 # in minutes
+      period            = 5 # in minutes
       stat              = "Sum"
       width             = 6
-      height            = 8
+      height            = 5
       expressions       = []
       yAxis             = { left = { min = 0 } }
       data_source       = var.data_source
@@ -112,12 +112,19 @@ locals {
     values(module.container_replicas_widget).*.data,
     values(module.container_request_count_widget).*.data,
     values(module.container_response_time_widget).*.data,
+    values(module.container_network_traffic_widget).*.data,
+    values(module.container_network_transmit_widget).*.data,
+
+    # Pod widgets
+    values(module.pod_cpu_widget).*.data,
 
     # Ingress widgets
     values(module.ingress_connections_widget).*.data,
     values(module.ingress_request_rate_widget).*.data,
     values(module.ingress_request_count_widget).*.data,
-    values(module.ingress_response_time_widget).*.data,
+    values(module.ingress_latency_widget).*.data,
+    values(module.ingress_cpu_widget).*.data,
+    values(module.ingress_memory_widget).*.data,
 
     # Text widgets
     values(module.text_title).*.data,
@@ -130,5 +137,10 @@ locals {
 
     # single widgets
     values(module.widget_custom).*.data,
+
+    # Logs widgets
+    values(module.logs_count_widget).*.data,
+    values(module.logs_error_rate_widget).*.data,
+    values(module.logs_warning_rate_widget).*.data,
   )
 }

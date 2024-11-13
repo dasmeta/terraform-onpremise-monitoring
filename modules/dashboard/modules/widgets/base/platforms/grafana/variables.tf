@@ -112,8 +112,48 @@ variable "decimals" {
   description = "The decimals to enable on numbers"
 }
 
+variable "unit" {
+  type        = string
+  default     = ""
+  description = "Unit used for widget metric"
+}
+
 variable "fillOpacity" {
   type        = number
   default     = 0
   description = "The fillOpacity value"
+}
+
+variable "options" {
+  type = object({
+    legend = object({
+      calcs       = optional(list(string), [])
+      displayMode = optional(string, "list")
+      placement   = optional(string, "bottom")
+      show_legend = optional(bool, true)
+    })
+    tooltip = optional(object({
+      mode = optional(string, "single")
+      sort = optional(string, "none")
+    }), {})
+  })
+  default = {
+    legend = {
+      calcs       = []
+      displayMode = "list"
+      placement   = "bottom"
+      show_legend = true
+    }
+    tooltip = {
+      mode = "single"
+      sort = "none"
+    }
+  }
+  description = "Configuration options for widget legend and tooltip."
+}
+
+variable "description" {
+  type        = string
+  description = "Description for the widget"
+  default     = ""
 }
