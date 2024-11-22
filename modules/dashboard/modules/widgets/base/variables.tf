@@ -214,3 +214,33 @@ variable "description" {
   description = "Description for the widget"
   default     = ""
 }
+
+variable "thresholds" {
+  type = object({
+    mode = string
+    steps = list(object({
+      color = string
+      value = number
+    }))
+  })
+  description = "Thresholds defined for a widget"
+  default = {
+    mode = "absolute"
+    steps = [
+      {
+        color = "green"
+        value = null
+      },
+      {
+        color = "red"
+        value = 80
+      },
+    ]
+  }
+}
+
+variable "color_mode" {
+  type        = string
+  description = "Color mode used for a widget"
+  default     = "palette-classic"
+}

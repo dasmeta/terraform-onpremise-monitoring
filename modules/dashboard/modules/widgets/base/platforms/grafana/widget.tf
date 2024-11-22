@@ -1,7 +1,7 @@
 locals {
   field_config_defaults = {
     "color" : {
-      "mode" : "palette-classic"
+      "mode" : try(var.color_mode, "palette-classic")
     },
     decimals : var.decimals,
     "custom" : {
@@ -33,19 +33,13 @@ locals {
       }
     },
     mappings = []
-    thresholds = {
-      mode = "absolute"
+    thresholds = try(var.thresholds, {
+      mode = "absolute",
       steps = [
-        {
-          color = "green"
-          value = null
-        },
-        {
-          color = "red"
-          value = 80
-        },
+        { color = "green", value = null },
+        { color = "red", value = 80 }
       ]
-    }
+    })
     unit = var.unit
   }
 
@@ -82,6 +76,7 @@ locals {
     timeSeries = "timeseries"
     gauge      = "gauge"
     histogram  = "histogram"
+    stat       = "stat"
   }
 
   # create query and metric based targets

@@ -73,6 +73,7 @@ module "this" {
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_block_ingress"></a> [block\_ingress](#module\_block\_ingress) | ./modules/blocks/ingress | n/a |
+| <a name="module_block_redis"></a> [block\_redis](#module\_block\_redis) | ./modules/blocks/redis | n/a |
 | <a name="module_block_service"></a> [block\_service](#module\_block\_service) | ./modules/blocks/service | n/a |
 | <a name="module_block_sla"></a> [block\_sla](#module\_block\_sla) | ./modules/blocks/sla | n/a |
 | <a name="module_container_cpu_widget"></a> [container\_cpu\_widget](#module\_container\_cpu\_widget) | ./modules/widgets/container/cpu | n/a |
@@ -94,6 +95,23 @@ module "this" {
 | <a name="module_logs_error_rate_widget"></a> [logs\_error\_rate\_widget](#module\_logs\_error\_rate\_widget) | ./modules/widgets/logs/error-rate | n/a |
 | <a name="module_logs_warning_rate_widget"></a> [logs\_warning\_rate\_widget](#module\_logs\_warning\_rate\_widget) | ./modules/widgets/logs/warning-rate | n/a |
 | <a name="module_pod_cpu_widget"></a> [pod\_cpu\_widget](#module\_pod\_cpu\_widget) | ./modules/widgets/pod/cpu | n/a |
+| <a name="module_pod_restarts_widget"></a> [pod\_restarts\_widget](#module\_pod\_restarts\_widget) | ./modules/widgets/pod/restarts | n/a |
+| <a name="module_redis_clients_widget"></a> [redis\_clients\_widget](#module\_redis\_clients\_widget) | ./modules/widgets/redis/clients | n/a |
+| <a name="module_redis_connections_widget"></a> [redis\_connections\_widget](#module\_redis\_connections\_widget) | ./modules/widgets/redis/connections | n/a |
+| <a name="module_redis_cpu_widget"></a> [redis\_cpu\_widget](#module\_redis\_cpu\_widget) | ./modules/widgets/redis/cpu | n/a |
+| <a name="module_redis_errors_widget"></a> [redis\_errors\_widget](#module\_redis\_errors\_widget) | ./modules/widgets/redis/errors | n/a |
+| <a name="module_redis_expired_evicted_keys_widget"></a> [redis\_expired\_evicted\_keys\_widget](#module\_redis\_expired\_evicted\_keys\_widget) | ./modules/widgets/redis/expired-evicted-keys | n/a |
+| <a name="module_redis_expiring_notexpiring_keys_widget"></a> [redis\_expiring\_notexpiring\_keys\_widget](#module\_redis\_expiring\_notexpiring\_keys\_widget) | ./modules/widgets/redis/expiring-notexpiring-keys | n/a |
+| <a name="module_redis_hits_misses_widget"></a> [redis\_hits\_misses\_widget](#module\_redis\_hits\_misses\_widget) | ./modules/widgets/redis/hits-misses | n/a |
+| <a name="module_redis_keys_widget"></a> [redis\_keys\_widget](#module\_redis\_keys\_widget) | ./modules/widgets/redis/keys | n/a |
+| <a name="module_redis_latency_widget"></a> [redis\_latency\_widget](#module\_redis\_latency\_widget) | ./modules/widgets/redis/latency | n/a |
+| <a name="module_redis_max_uptime_widget"></a> [redis\_max\_uptime\_widget](#module\_redis\_max\_uptime\_widget) | ./modules/widgets/redis/max-uptime | n/a |
+| <a name="module_redis_memory_widget"></a> [redis\_memory\_widget](#module\_redis\_memory\_widget) | ./modules/widgets/redis/memory | n/a |
+| <a name="module_redis_network_widget"></a> [redis\_network\_widget](#module\_redis\_network\_widget) | ./modules/widgets/redis/network | n/a |
+| <a name="module_redis_replicas_widget"></a> [redis\_replicas\_widget](#module\_redis\_replicas\_widget) | ./modules/widgets/redis/replicas | n/a |
+| <a name="module_redis_restarts_widget"></a> [redis\_restarts\_widget](#module\_redis\_restarts\_widget) | ./modules/widgets/redis/restarts | n/a |
+| <a name="module_redis_total_commands_widget"></a> [redis\_total\_commands\_widget](#module\_redis\_total\_commands\_widget) | ./modules/widgets/redis/total-commands | n/a |
+| <a name="module_redis_total_memory_widget"></a> [redis\_total\_memory\_widget](#module\_redis\_total\_memory\_widget) | ./modules/widgets/redis/total-memory | n/a |
 | <a name="module_text_title"></a> [text\_title](#module\_text\_title) | ./modules/widgets/text/title | n/a |
 | <a name="module_text_title_with_collapse"></a> [text\_title\_with\_collapse](#module\_text\_title\_with\_collapse) | ./modules/widgets/text/title-with-collapse | n/a |
 | <a name="module_text_title_with_link"></a> [text\_title\_with\_link](#module\_text\_title\_with\_link) | ./modules/widgets/text/title-with-link | n/a |
