@@ -1,7 +1,7 @@
 module "base" {
   source = "../../base"
 
-  name              = "Network Transmit Errors [${var.period}m]"
+  name              = "Replicas"
   data_source       = var.data_source
   coordinates       = var.coordinates
   period            = var.period
@@ -10,17 +10,14 @@ module "base" {
   anomaly_deviation = var.anomaly_deviation
 
   defaults = {
-    MetricNamespace = "ContainerInsights"
+    MetricNamespace = "KubeStateMetrics"
+    ClusterName     = var.cluster
+    Namespace       = var.namespace
+    DeploymentName  = var.deployment
     accountId       = var.account_id
   }
 
-  options = {
-    legend = {
-      show_legend = false
-    }
-  }
-
   metrics = [
-    { label : "Received Errors", color : "FF103B", expression : "rate(container_network_transmit_errors_total{pod=~\"^${var.pod}-[^-]+-[^-]+$\"}[${var.period}m])" },
+    { label = "Replicas", color = "007CEF", expression = "sum(kube_deployment_status_replicas{deployment=\"${var.deployment}\", namespace=\"${var.namespace}\"})" },
   ]
 }

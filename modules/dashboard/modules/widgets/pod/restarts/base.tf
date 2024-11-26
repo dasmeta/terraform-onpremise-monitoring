@@ -1,7 +1,7 @@
 module "base" {
   source = "../../base"
 
-  name              = "Network Transmit Errors [${var.period}m]"
+  name              = "Restarts [${var.period}m]"
   data_source       = var.data_source
   coordinates       = var.coordinates
   period            = var.period
@@ -11,16 +11,13 @@ module "base" {
 
   defaults = {
     MetricNamespace = "ContainerInsights"
+    ClusterName     = var.cluster
+    Namespace       = var.namespace
+    PodName         = var.pod
     accountId       = var.account_id
   }
 
-  options = {
-    legend = {
-      show_legend = false
-    }
-  }
-
   metrics = [
-    { label : "Received Errors", color : "FF103B", expression : "rate(container_network_transmit_errors_total{pod=~\"^${var.pod}-[^-]+-[^-]+$\"}[${var.period}m])" },
+    { label = "Restarts", color = "FF0F3C", expression = "sum(rate(kube_pod_container_status_restarts_total{pod=~\"^${var.pod}-[^-]+-[^-]+$\"}[${var.period}m]))" },
   ]
 }
