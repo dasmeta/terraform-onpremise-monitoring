@@ -1,7 +1,7 @@
 module "base" {
   source = "../../base"
 
-  name              = "Restarts [${var.period}m]"
+  name              = "Replicas"
   data_source       = var.data_source
   coordinates       = var.coordinates
   period            = var.period
@@ -10,14 +10,14 @@ module "base" {
   anomaly_deviation = var.anomaly_deviation
 
   defaults = {
-    MetricNamespace = "ContainerInsights"
+    MetricNamespace = "KubeStateMetrics"
     ClusterName     = var.cluster
     Namespace       = var.namespace
-    PodName         = var.pod
+    DeploymentName  = var.deployment
     accountId       = var.account_id
   }
 
   metrics = [
-    { label = "Restarts", color = "FF0F3C", expression = "sum(rate(kube_pod_container_status_restarts_total{pod=~\"^${var.pod}-[^-]+-[^-]+$\"}[${var.period}m]))" },
+    { label = "Replicas", color = "007CEF", expression = "sum(kube_deployment_status_replicas{deployment=\"${var.deployment}\", namespace=\"${var.namespace}\"})" },
   ]
 }

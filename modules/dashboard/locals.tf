@@ -62,6 +62,7 @@ locals {
       yAxis             = { left = { min = 0 } }
       data_source       = var.data_source
       container         = "$container"
+      deployment        = "$deployment"
       namespace         = "$namespace"
       cluster           = "$cluster"
       account_id        = null
@@ -118,7 +119,11 @@ locals {
 
     # Pod widgets
     values(module.pod_cpu_widget).*.data,
+    values(module.pod_memory_widget).*.data,
     values(module.pod_restarts_widget).*.data,
+
+    # Deployment widgets
+    values(module.deployment_replicas_widget).*.data,
 
     # Ingress widgets
     values(module.ingress_connections_widget).*.data,

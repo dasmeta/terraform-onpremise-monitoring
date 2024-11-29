@@ -85,6 +85,7 @@ module "this" {
 | <a name="module_container_request_count_widget"></a> [container\_request\_count\_widget](#module\_container\_request\_count\_widget) | ./modules/widgets/container/request-count | n/a |
 | <a name="module_container_response_time_widget"></a> [container\_response\_time\_widget](#module\_container\_response\_time\_widget) | ./modules/widgets/container/response-time | n/a |
 | <a name="module_container_restarts_widget"></a> [container\_restarts\_widget](#module\_container\_restarts\_widget) | ./modules/widgets/container/restarts | n/a |
+| <a name="module_deployment_replicas_widget"></a> [deployment\_replicas\_widget](#module\_deployment\_replicas\_widget) | ./modules/widgets/deployment/replicas | n/a |
 | <a name="module_ingress_connections_widget"></a> [ingress\_connections\_widget](#module\_ingress\_connections\_widget) | ./modules/widgets/ingress/connections | n/a |
 | <a name="module_ingress_cpu_widget"></a> [ingress\_cpu\_widget](#module\_ingress\_cpu\_widget) | ./modules/widgets/ingress/cpu | n/a |
 | <a name="module_ingress_latency_widget"></a> [ingress\_latency\_widget](#module\_ingress\_latency\_widget) | ./modules/widgets/ingress/latency | n/a |
@@ -95,6 +96,7 @@ module "this" {
 | <a name="module_logs_error_rate_widget"></a> [logs\_error\_rate\_widget](#module\_logs\_error\_rate\_widget) | ./modules/widgets/logs/error-rate | n/a |
 | <a name="module_logs_warning_rate_widget"></a> [logs\_warning\_rate\_widget](#module\_logs\_warning\_rate\_widget) | ./modules/widgets/logs/warning-rate | n/a |
 | <a name="module_pod_cpu_widget"></a> [pod\_cpu\_widget](#module\_pod\_cpu\_widget) | ./modules/widgets/pod/cpu | n/a |
+| <a name="module_pod_memory_widget"></a> [pod\_memory\_widget](#module\_pod\_memory\_widget) | ./modules/widgets/pod/memory | n/a |
 | <a name="module_pod_restarts_widget"></a> [pod\_restarts\_widget](#module\_pod\_restarts\_widget) | ./modules/widgets/pod/restarts | n/a |
 | <a name="module_redis_clients_widget"></a> [redis\_clients\_widget](#module\_redis\_clients\_widget) | ./modules/widgets/redis/clients | n/a |
 | <a name="module_redis_connections_widget"></a> [redis\_connections\_widget](#module\_redis\_connections\_widget) | ./modules/widgets/redis/connections | n/a |
