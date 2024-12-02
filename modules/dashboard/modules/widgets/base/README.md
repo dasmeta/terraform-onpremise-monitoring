@@ -27,6 +27,7 @@ No resources.
 | <a name="input_annotations"></a> [annotations](#input\_annotations) | The annotations option for alarm widgets | `any` | `null` | no |
 | <a name="input_anomaly_detection"></a> [anomaly\_detection](#input\_anomaly\_detection) | Allow to enable anomaly detection on widget metrics | `bool` | `false` | no |
 | <a name="input_anomaly_deviation"></a> [anomaly\_deviation](#input\_anomaly\_deviation) | Deviation of the anomaly band | `number` | `6` | no |
+| <a name="input_color_mode"></a> [color\_mode](#input\_color\_mode) | Color mode used for a widget | `string` | `"palette-classic"` | no |
 | <a name="input_coordinates"></a> [coordinates](#input\_coordinates) | n/a | <pre>object({<br>    x : number<br>    y : number<br>    width : number<br>    height : number<br>  })</pre> | n/a | yes |
 | <a name="input_data_source"></a> [data\_source](#input\_data\_source) | The custom datasource for widget item | <pre>object({<br>    uid  = optional(string, null)<br>    type = optional(string, "prometheus")<br>  })</pre> | n/a | yes |
 | <a name="input_decimals"></a> [decimals](#input\_decimals) | The decimals to enable on numbers | `number` | `0` | no |
@@ -49,6 +50,7 @@ No resources.
 | <a name="input_stacked"></a> [stacked](#input\_stacked) | The stacked option for log insights and alarm widgets | `bool` | `null` | no |
 | <a name="input_start"></a> [start](#input\_start) | start of widget | `string` | `null` | no |
 | <a name="input_stat"></a> [stat](#input\_stat) | n/a | `string` | `"Average"` | no |
+| <a name="input_thresholds"></a> [thresholds](#input\_thresholds) | Thresholds defined for a widget | <pre>object({<br>    mode = string<br>    steps = list(object({<br>      color = string<br>      value = number<br>    }))<br>  })</pre> | <pre>{<br>  "mode": "absolute",<br>  "steps": [<br>    {<br>      "color": "green",<br>      "value": null<br>    },<br>    {<br>      "color": "red",<br>      "value": 80<br>    }<br>  ]<br>}</pre> | no |
 | <a name="input_trend"></a> [trend](#input\_trend) | trend of widget | `bool` | `null` | no |
 | <a name="input_type"></a> [type](#input\_type) | The type of widget to be prepared | `string` | `"metric"` | no |
 | <a name="input_unit"></a> [unit](#input\_unit) | Unit used for widget metric | `string` | `""` | no |

@@ -32,3 +32,14 @@ module "block_sla" {
 
   balancer_name = try(each.value.block.balancer_name, null)
 }
+
+module "block_redis" {
+  source = "./modules/blocks/redis"
+
+  for_each = { for index, item in try(local.blocks_by_type["redis"], []) : index => item }
+
+  redis_name      = each.value.block.redis_name
+  redis_pod       = try(each.value.block.redis_pod, "")
+  redis_namespace = try(each.value.block.redis_namespace, "")
+  namespace       = try(each.value.block.namespace, "$namespace")
+}

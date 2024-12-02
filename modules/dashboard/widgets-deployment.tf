@@ -9,9 +9,9 @@ module "deployment_replicas_widget" {
   period      = each.value.period
 
   # deployment
-  deployment       = each.value.deployment
-  cluster   = try(each.value.cluster, null)
-  namespace = each.value.namespace
+  deployment = each.value.deployment
+  cluster    = try(each.value.cluster, null)
+  namespace  = each.value.namespace
 
   account_id        = each.value.account_id
   region            = each.value.region

@@ -31,6 +31,7 @@ locals {
     ingress = values(module.block_ingress).*.result
     service = values(module.block_service).*.result
     sla     = values(module.block_sla).*.result
+    redis   = values(module.block_redis).*.result
   }
 
   blocks_by_type_results = concat([], [
@@ -148,5 +149,23 @@ locals {
     values(module.logs_count_widget).*.data,
     values(module.logs_error_rate_widget).*.data,
     values(module.logs_warning_rate_widget).*.data,
+
+    # Redis widgets
+    values(module.redis_max_uptime_widget).*.data,
+    values(module.redis_memory_widget).*.data,
+    values(module.redis_total_memory_widget).*.data,
+    values(module.redis_cpu_widget).*.data,
+    values(module.redis_hits_misses_widget).*.data,
+    values(module.redis_restarts_widget).*.data,
+    values(module.redis_errors_widget).*.data,
+    values(module.redis_clients_widget).*.data,
+    values(module.redis_connections_widget).*.data,
+    values(module.redis_latency_widget).*.data,
+    values(module.redis_network_widget).*.data,
+    values(module.redis_replicas_widget).*.data,
+    values(module.redis_total_commands_widget).*.data,
+    values(module.redis_keys_widget).*.data,
+    values(module.redis_expired_evicted_keys_widget).*.data,
+    values(module.redis_expiring_notexpiring_keys_widget).*.data,
   )
 }
