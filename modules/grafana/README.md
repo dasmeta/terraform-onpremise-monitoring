@@ -37,7 +37,7 @@
 | <a name="input_certificate_arn"></a> [certificate\_arn](#input\_certificate\_arn) | certificate arn for grafana | `string` | `"arn:aws:acm:us-east-2:774305617028:certificate/0c7b32a5-cfd3-488b-800c-fe289f3bb040"` | no |
 | <a name="input_cloudwatch_datasource"></a> [cloudwatch\_datasource](#input\_cloudwatch\_datasource) | boolean flag to enable cloudwatch datasource | `bool` | `true` | no |
 | <a name="input_folder_uid"></a> [folder\_uid](#input\_folder\_uid) | n/a | `string` | `""` | no |
-| <a name="input_grafana_admin_password"></a> [grafana\_admin\_password](#input\_grafana\_admin\_password) | admin password | `string` | `"Phkww5EWRHuSxKI"` | no |
+| <a name="input_grafana_admin_password"></a> [grafana\_admin\_password](#input\_grafana\_admin\_password) | admin password | `string` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | namespace to use for deployment | `string` | `"monitoring"` | no |
 | <a name="input_prometheus_url"></a> [prometheus\_url](#input\_prometheus\_url) | url for prometheus datasource | `string` | `"http://prometheus-operated.monitoring.svc.cluster.local:9090"` | no |
 

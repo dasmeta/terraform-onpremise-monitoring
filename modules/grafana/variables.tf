@@ -8,7 +8,6 @@ variable "namespace" {
 variable "grafana_admin_password" {
   type        = string
   description = "admin password"
-  default     = "Phkww5EWRHuSxKI"
 }
 
 variable "folder_uid" {
