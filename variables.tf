@@ -4,6 +4,11 @@ variable "name" {
   description = "Dashboard name"
 }
 
+variable "folder_uid" {
+  type    = string
+  default = ""
+}
+
 variable "application_dashboard" {
   type = object({
     rows = optional(any, [])

@@ -7,6 +7,8 @@ module "application_dashboard" {
   rows        = var.application_dashboard.rows
   data_source = var.application_dashboard.data_source
   variables   = var.application_dashboard.variables
+
+  depends_on = [module.grafana, module.prometheus]
 }
 
 module "alerts" {
@@ -19,4 +21,16 @@ module "alerts" {
   rules                  = var.alerts.rules
   contact_points         = var.alerts.contact_points
   notifications          = var.alerts.notifications
+
+  depends_on = [module.grafana, module.prometheus]
+}
+
+module "grafana" {
+  source = "./modules/grafana"
+
+}
+
+module "prometheus" {
+  source = "./modules/prometheus"
+
 }
