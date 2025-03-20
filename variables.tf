@@ -154,3 +154,21 @@ variable "alerts" {
 
   default = {}
 }
+
+variable "grafana_configs" {
+  type        = map(any)
+  description = "values to be used as grafana's chart values"
+  default     = {}
+}
+
+variable "prometheus_configs" {
+  type        = map(any)
+  description = "values to be used as prometheus's chart values"
+  default     = {}
+}
+
+variable "grafana_admin_password" {
+  type        = string
+  description = "grafana admin user password"
+  default     = ""
+}

@@ -40,4 +40,13 @@ locals {
     },
 
   ]
+
+  grafana_configs = {
+    cloudwatch_enable_datasource = try(var.grafana_configs.cloudwatch_datasource, true),
+    request_cpu                  = try(var.grafana_configs.grafana_resources.request_cpu, "2000m")
+    request_mem                  = try(var.grafana_configs.grafana_resources.request_memory, "2000M")
+    limit_cpu                    = try(var.grafana_configs.grafana_resources.limit_cpu, "2000m")
+    limit_mem                    = try(var.grafana_configs.grafana_resources.limit_mem, "2000M")
+
+  }
 }

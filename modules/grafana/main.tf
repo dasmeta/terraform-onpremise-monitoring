@@ -10,10 +10,17 @@ resource "helm_release" "grafana" {
 
   values = [
     templatefile("${path.module}/values/grafana-values.yaml.tpl", {
-      PROMETHEUS_URL      = var.prometheus_url
-      CLOUDWATCH_ROLE_ARN = module.grafana_cloudwatch_role[0].arn
+      PROMETHEUS_URL      = var.grafana_configs.prometheus_url
+      CLOUDWATCH_ENABLE   = var.cloudwatch_datasource
+      CLOUDWATCH_ROLE_ARN = try(module.grafana_cloudwatch_role[0].arn, "")
       AWS_REGION          = var.aws_region
-      INGRESS_CERTIFICATE = var.certificate_arn
+      INGRESS_CERTIFICATE = var.grafana_configs.certificate_arn
+      HOST                = var.grafana_configs.host
+      REQUEST_CPU         = local.grafana_configs.request_cpu
+      REQUEST_MEMORY      = local.grafana_configs.request_mem
+      LIMIT_CPU           = local.grafana_configs.limit_cpu
+      LIMIT_MEMORY        = local.grafana_configs.limit_mem
+
     })
   ]
 

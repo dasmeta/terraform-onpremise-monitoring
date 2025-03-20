@@ -26,11 +26,13 @@ module "alerts" {
 }
 
 module "grafana" {
-  source = "./modules/grafana"
+  source                 = "./modules/grafana"
+  grafana_admin_password = var.grafana_admin_password
+  grafana_configs        = var.grafana_configs
 
 }
 
 module "prometheus" {
-  source = "./modules/prometheus"
-
+  source             = "./modules/prometheus"
+  prometheus_configs = var.prometheus_configs
 }

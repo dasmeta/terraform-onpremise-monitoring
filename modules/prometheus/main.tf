@@ -8,6 +8,16 @@ resource "helm_release" "prometheus" {
   timeout          = 600
 
   values = [
-    file("${path.module}/values/prometheus-values.yaml")
+    templatefile("${path.module}/values/prometheus-values.yaml", {
+      RETENTION_DAYS      = var.prometheus_configs.retention_days
+      STORAGE_CLASS_NAME  = var.prometheus_configs.storage_class
+      STORAGE_SIZE        = var.prometheus_configs.storage_size
+      REQUEST_CPU         = var.prometheus_configs.request_cpu
+      REQUEST_MEM         = var.prometheus_configs.request_mem
+      LIMIT_CPU           = var.prometheus_configs.limit_cpu
+      LIMIT_MEM           = var.prometheus_configs.limit_mem
+      ENABLE_ALERTMANAGER = var.prometheus_configs.enable_alertmanager
+    })
+
   ]
 }

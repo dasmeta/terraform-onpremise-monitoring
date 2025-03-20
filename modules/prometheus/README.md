@@ -31,6 +31,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | namespace to use for deployment | `string` | `"monitoring"` | no |
+| <a name="input_prometheus_configs"></a> [prometheus\_configs](#input\_prometheus\_configs) | values to send to prometheus template values file | `map(any)` | <pre>{<br/>  "enable_alertmanager": true,<br/>  "limit_cpu": "1000m",<br/>  "limit_mem": "4Gi",<br/>  "request_cpu": "500m",<br/>  "request_mem": "2Gi",<br/>  "retention_days": "15d",<br/>  "storage_class": "efs-sc",<br/>  "storage_size": "50Gi"<br/>}</pre> | no |
 
 ## Outputs
 

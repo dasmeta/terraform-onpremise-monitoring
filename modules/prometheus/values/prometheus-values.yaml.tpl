@@ -10,28 +10,28 @@ prometheus:
   enabled: true
   prometheusSpec:
     replicas: 2
-    retention: 15d
+    retention: ${RETENTION_DAYS} # 15d
     storageSpec:
       volumeClaimTemplate:
         spec:
-          storageClassName: efs-sc-root
+          storageClassName: ${STORAGE_CLASS_NAME} # efs-sc-root
           accessModes: ["ReadWriteMany"]
           resources:
             requests:
-              storage: 50Gi
+              storage: ${STORAGE_SIZE} # 50Gi
     resources:
       requests:
-        memory: 2Gi
-        cpu: 500m
+        memory: ${REQUEST_MEM} # 2Gi
+        cpu: ${REQUEST_CPU} # 500m
       limits:
-        memory: 4Gi
-        cpu: 1000m
+        memory: ${LIMIT_MEM} # 4Gi
+        cpu: ${LIMIT_CPU} # 1000m
     serviceMonitorSelectorNilUsesHelmValues: false
 
 alertmanager:
-  enabled: true
+  enabled: ${ENABLE_ALERTMANAGER}
   alertmanagerSpec:
-    replicas: 2
+    replicas: 1
     resources:
       requests:
         memory: 512Mi

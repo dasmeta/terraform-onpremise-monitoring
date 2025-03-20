@@ -7,12 +7,12 @@ module "this" {
     rows : [
       { type : "block/sla" },
       { type : "block/ingress" },
-      { type : "block/service", name : "backend", host : "api.dev.trysela.com" },
+      { type : "block/service", name : "backend", host : "api.example.com" },
       { type : "block/service", name : "worker" },
       { type : "block/service", name : "talk" }
     ]
     data_source = {
-      uid : "PBFA97CFB590B2093"
+      uid : "#####"
     }
     variables = [
       {
@@ -68,4 +68,11 @@ module "this" {
       }
     ]
   }
+
+  grafana_configs = {
+    certificate_arn = "arn:aws:acm:us-east-2:774305617028:certificate/0c7b32a5-cfd3-488b-800c-fe289f3bb040"
+    host            = "grafana.example.com"
+    prometheus_url  = "http://prometheus-operated.monitoring.svc.cluster.local:9090"
+  }
+  grafana_admin_password = "admin"
 }
