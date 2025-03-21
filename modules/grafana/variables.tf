@@ -41,7 +41,6 @@ variable "aws_region" {
 
 variable "grafana_configs" {
   type = object({
-    host = string
     resources = object({
       request = object({
         cpu = string
@@ -52,14 +51,18 @@ variable "grafana_configs" {
         mem = string
       })
     })
-    prometheus_url  = string
-    certificate_arn = string
+    ingress_configs = optional(object({
+      annotations = optional(map(string))
+      hosts       = list(string)
+      path        = optional(string)
+      path_type   = optional(string)
+    }))
+    prometheus_url = string
   })
 
   description = "Values to construct the values file for Grafana Helm chart"
 
   default = {
-    host = ""
     resources = {
       request = {
         cpu = "1"
@@ -70,7 +73,12 @@ variable "grafana_configs" {
         mem = "3Gi"
       }
     }
-    prometheus_url  = "http://prometheus-operated.monitoring.svc.cluster.local:9090"
-    certificate_arn = ""
+    ingress_configs = {
+      annotations = {}
+      hosts       = ["grafana.example.com"]
+      path        = ""
+      path_type   = ""
+    }
+    prometheus_url = "http://prometheus-operated.monitoring.svc.cluster.local:9090"
   }
 }

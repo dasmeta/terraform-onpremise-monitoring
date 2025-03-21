@@ -29,6 +29,7 @@ module "grafana" {
   source                 = "./modules/grafana"
   grafana_admin_password = var.grafana_admin_password
   grafana_configs        = var.grafana_configs
+  aws_region             = var.aws_region
 
 }
 

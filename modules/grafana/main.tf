@@ -11,18 +11,19 @@ resource "helm_release" "grafana" {
 
   values = [
     templatefile("${path.module}/values/grafana-values.yaml.tpl", {
-      PROMETHEUS_ENABLE   = var.prometheus_datasource
-      PROMETHEUS_URL      = var.grafana_configs.prometheus_url
-      CLOUDWATCH_ENABLE   = var.cloudwatch_datasource
-      CLOUDWATCH_ROLE_ARN = try(module.grafana_cloudwatch_role[0].arn, "")
-      AWS_REGION          = var.aws_region
-      INGRESS_CERTIFICATE = var.grafana_configs.certificate_arn
-      HOST                = var.grafana_configs.host
-      REQUEST_CPU         = try(local.grafana_configs.resources.request.cpu, "")
-      REQUEST_MEMORY      = try(local.grafana_configs.resources.request.mem, "")
-      LIMIT_CPU           = try(local.grafana_configs.resources.limit.cpu, "")
-      LIMIT_MEMORY        = try(local.grafana_configs.resources.limit.mem, "")
-
+      PROMETHEUS_ENABLE   = coalesce(try(var.prometheus_datasource, null), false)
+      PROMETHEUS_URL      = coalesce(try(var.grafana_configs.prometheus_url, null), "")
+      CLOUDWATCH_ENABLE   = coalesce(try(var.cloudwatch_datasource, null), false)
+      CLOUDWATCH_ROLE_ARN = coalesce(try(module.grafana_cloudwatch_role[0].arn, null), "")
+      AWS_REGION          = coalesce(try(var.aws_region, null), "eu-central-1")
+      REQUEST_CPU         = coalesce(try(local.grafana_configs.resources.request.cpu, null), "500m")
+      REQUEST_MEMORY      = coalesce(try(local.grafana_configs.resources.request.mem, null), "512Mi")
+      LIMIT_CPU           = coalesce(try(local.grafana_configs.resources.limit.cpu, null), "1")
+      LIMIT_MEMORY        = coalesce(try(local.grafana_configs.resources.limit.mem, null), "1Gi")
+      INGRESS_ANNOTATIONS = coalesce(try(local.grafana_configs.ingress_configs.annotations, null), {})
+      INGRESS_HOSTS       = coalesce(try(var.grafana_configs.ingress_configs.hosts, null), ["grafana.example.com"])
+      INGRESS_PATH        = coalesce(try(local.grafana_configs.ingress_configs.path, null), "/")
+      INGRESS_PATH_TYPE   = coalesce(try(local.grafana_configs.ingress_configs.path_type, null), "Prefix")
     })
   ]
 

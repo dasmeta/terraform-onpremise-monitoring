@@ -1,3 +1,4 @@
+
 persistence:
   enabled: true
   type: pvc
@@ -6,35 +7,29 @@ persistence:
 ingress:
   enabled: true
   annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/group.name: dev-ingress
-    alb.ingress.kubernetes.io/healthcheck-path: "/api/health"
-    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "15"
-    alb.ingress.kubernetes.io/group.order: "20"
-    alb.ingress.kubernetes.io/ssl-redirect: "443"
-    alb.ingress.kubernetes.io/success-codes: "200-399"
-    alb.ingress.kubernetes.io/certificate-arn: ${INGRESS_CERTIFICATE}
+%{~ for k, v in INGRESS_ANNOTATIONS }
+    ${k}: "${v}"
+%{~ endfor }
   hosts:
-    - ${HOST}
-  path: /
-  pathType: Prefix
+%{ for h in INGRESS_HOSTS ~}
+    - ${h}
+%{ endfor ~}
+  path: ${INGRESS_PATH}
+  pathType: ${INGRESS_PATH_TYPE}
 
 datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
-%{ if PROMETHEUS_ENABLE }
+%{~ if PROMETHEUS_ENABLE }
       - name: Prometheus
         type: prometheus
         access: proxy
         url: ${PROMETHEUS_URL}
         isDefault: true
         editable: true
-%{ endif }
-%{ if CLOUDWATCH_ENABLE }
+%{~ endif }
+%{~ if CLOUDWATCH_ENABLE }
       - name: CloudWatch
         type: cloudwatch
         access: proxy
@@ -44,7 +39,7 @@ datasources:
           authType: default
           assumeRoleArn: ${CLOUDWATCH_ROLE_ARN}
           defaultRegion: ${AWS_REGION}
-%{ endif }
+%{~ endif }
 
 replicas: 1
 image.tag: "11.4.2"

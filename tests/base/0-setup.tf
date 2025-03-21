@@ -17,6 +17,7 @@ terraform {
 provider "grafana" {
   url  = "https://grafana.example.com"
   auth = "admin:admin"
+
 }
 
 provider "helm" {

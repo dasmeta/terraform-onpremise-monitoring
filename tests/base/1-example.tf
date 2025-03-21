@@ -12,7 +12,7 @@ module "this" {
       { type : "block/service", name : "talk" }
     ]
     data_source = {
-      uid : "#####"
+      uid : "#######"
     }
     variables = [
       {
@@ -70,9 +70,7 @@ module "this" {
   }
 
   grafana_configs = {
-    certificate_arn = "arn:aws:acm:us-east-2:774305617028:certificate/0c7b32a5-cfd3-488b-800c-fe289f3bb040"
-    host            = "grafana.example.com"
-    prometheus_url  = "http://prometheus-operated.monitoring.svc.cluster.local:9090"
+    prometheus_url = "http://prometheus-operated.monitoring.svc.cluster.local:9090"
 
     resources = {
       request = {
@@ -80,6 +78,20 @@ module "this" {
         mem = "2Gi"
       }
     }
+    ingress_configs = {
+      annotations = {
+        "kubernetes.io/ingress.class"                = "alb"
+        "alb.ingress.kubernetes.io/scheme"           = "internet-facing"
+        "alb.ingress.kubernetes.io/target-type"      = "ip"
+        "alb.ingress.kubernetes.io/listen-ports"     = "[{\\\"HTTP\\\": 80}, {\\\"HTTPS\\\": 443}]"
+        "alb.ingress.kubernetes.io/group.name"       = "dev-ingress"
+        "alb.ingress.kubernetes.io/healthcheck-path" = "/api/health"
+        "alb.ingress.kubernetes.io/ssl-redirect"     = "443"
+        "alb.ingress.kubernetes.io/certificate-arn"  = "{certeficate_arn}"
+      }
+      hosts = ["grafana.example.com"]
+    }
   }
   grafana_admin_password = "admin"
+  aws_region             = "us-east-2"
 }
