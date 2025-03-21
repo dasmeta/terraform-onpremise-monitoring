@@ -11,6 +11,7 @@ resource "helm_release" "grafana" {
 
   values = [
     templatefile("${path.module}/values/grafana-values.yaml.tpl", {
+      PROMETHEUS_ENABLE   = var.prometheus_datasource
       PROMETHEUS_URL      = var.grafana_configs.prometheus_url
       CLOUDWATCH_ENABLE   = var.cloudwatch_datasource
       CLOUDWATCH_ROLE_ARN = try(module.grafana_cloudwatch_role[0].arn, "")

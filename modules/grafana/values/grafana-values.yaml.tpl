@@ -26,12 +26,14 @@ datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
+%{ if PROMETHEUS_ENABLE }
       - name: Prometheus
         type: prometheus
         access: proxy
         url: ${PROMETHEUS_URL}
         isDefault: true
         editable: true
+%{ endif }
 %{ if CLOUDWATCH_ENABLE }
       - name: CloudWatch
         type: cloudwatch

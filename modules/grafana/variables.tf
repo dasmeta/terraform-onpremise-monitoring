@@ -17,6 +17,12 @@ variable "enable_grafana" {
   default     = true
 }
 
+variable "prometheus_datasource" {
+  type        = bool
+  description = "boolean flag to enable prometheus datasource"
+  default     = true
+}
+
 variable "folder_uid" {
   type    = string
   default = ""

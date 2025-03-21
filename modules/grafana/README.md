@@ -40,6 +40,7 @@
 | <a name="input_grafana_admin_password"></a> [grafana\_admin\_password](#input\_grafana\_admin\_password) | admin password | `string` | `""` | no |
 | <a name="input_grafana_configs"></a> [grafana\_configs](#input\_grafana\_configs) | Values to construct the values file for Grafana Helm chart | <pre>object({<br/>    host = string<br/>    resources = object({<br/>      request = object({<br/>        cpu = string<br/>        mem = string<br/>      })<br/>      limit = object({<br/>        cpu = string<br/>        mem = string<br/>      })<br/>    })<br/>    prometheus_url  = string<br/>    certificate_arn = string<br/>  })</pre> | <pre>{<br/>  "certificate_arn": "",<br/>  "host": "",<br/>  "prometheus_url": "http://prometheus-operated.monitoring.svc.cluster.local:9090",<br/>  "resources": {<br/>    "limit": {<br/>      "cpu": "2",<br/>      "mem": "3Gi"<br/>    },<br/>    "request": {<br/>      "cpu": "1",<br/>      "mem": "2Gi"<br/>    }<br/>  }<br/>}</pre> | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | namespace to use for deployment | `string` | `"monitoring"` | no |
+| <a name="input_prometheus_datasource"></a> [prometheus\_datasource](#input\_prometheus\_datasource) | boolean flag to enable prometheus datasource | `bool` | `true` | no |
 
 ## Outputs
 
