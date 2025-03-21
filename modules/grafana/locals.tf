@@ -34,11 +34,6 @@ locals {
       ],
       resources = ["*"]
     },
-    {
-      actions   = ["ec2:DescribeTags", "ec2:DescribeInstances", "ec2:DescribeRegions"],
-      resources = ["*"]
-    },
-
   ]
 
   grafana_configs = {

@@ -35,9 +35,10 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | n/a | `string` | `"eu-central-1"` | no |
 | <a name="input_cloudwatch_datasource"></a> [cloudwatch\_datasource](#input\_cloudwatch\_datasource) | boolean flag to enable cloudwatch datasource | `bool` | `true` | no |
+| <a name="input_enable_grafana"></a> [enable\_grafana](#input\_enable\_grafana) | flag to either enable or disable grafana deployment | `bool` | `true` | no |
 | <a name="input_folder_uid"></a> [folder\_uid](#input\_folder\_uid) | n/a | `string` | `""` | no |
 | <a name="input_grafana_admin_password"></a> [grafana\_admin\_password](#input\_grafana\_admin\_password) | admin password | `string` | `""` | no |
-| <a name="input_grafana_configs"></a> [grafana\_configs](#input\_grafana\_configs) | values to construct the values file for grafana chart | `map(any)` | <pre>{<br/>  "certificate_arn": "",<br/>  "host": "",<br/>  "limit_cpu": "1000m",<br/>  "limit_mem": "4Gi",<br/>  "prometheus_url": "http://prometheus-operated.monitoring.svc.cluster.local:9090",<br/>  "request_cpu": "500m",<br/>  "request_mem": "2Gi"<br/>}</pre> | no |
+| <a name="input_grafana_configs"></a> [grafana\_configs](#input\_grafana\_configs) | Values to construct the values file for Grafana Helm chart | <pre>object({<br/>    host = string<br/>    resources = object({<br/>      request = object({<br/>        cpu = string<br/>        mem = string<br/>      })<br/>      limit = object({<br/>        cpu = string<br/>        mem = string<br/>      })<br/>    })<br/>    prometheus_url  = string<br/>    certificate_arn = string<br/>  })</pre> | <pre>{<br/>  "certificate_arn": "",<br/>  "host": "",<br/>  "prometheus_url": "http://prometheus-operated.monitoring.svc.cluster.local:9090",<br/>  "resources": {<br/>    "limit": {<br/>      "cpu": "2",<br/>      "mem": "3Gi"<br/>    },<br/>    "request": {<br/>      "cpu": "1",<br/>      "mem": "2Gi"<br/>    }<br/>  }<br/>}</pre> | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | namespace to use for deployment | `string` | `"monitoring"` | no |
 
 ## Outputs

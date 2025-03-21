@@ -11,6 +11,12 @@ variable "grafana_admin_password" {
   default     = ""
 }
 
+variable "enable_grafana" {
+  type        = bool
+  description = "flag to either enable or disable grafana deployment"
+  default     = true
+}
+
 variable "folder_uid" {
   type    = string
   default = ""
@@ -22,32 +28,42 @@ variable "cloudwatch_datasource" {
   description = "boolean flag to enable cloudwatch datasource"
 }
 
-# variable "prometheus_url" {
-#   type        = string
-#   default     = "http://prometheus-operated.monitoring.svc.cluster.local:9090"
-#   description = "url for prometheus datasource"
-# }
-
 variable "aws_region" {
   type    = string
   default = "eu-central-1"
 }
 
-# variable "certificate_arn" {
-#   type        = string
-#   description = "certificate arn for grafana ingress"
-#   default     = ""
-# }
-
 variable "grafana_configs" {
-  type        = map(any)
-  description = "values to construct the values file for grafana chart"
+  type = object({
+    host = string
+    resources = object({
+      request = object({
+        cpu = string
+        mem = string
+      })
+      limit = object({
+        cpu = string
+        mem = string
+      })
+    })
+    prometheus_url  = string
+    certificate_arn = string
+  })
+
+  description = "Values to construct the values file for Grafana Helm chart"
+
   default = {
-    host            = ""
-    request_cpu     = "500m"
-    request_mem     = "2Gi"
-    limit_cpu       = "1000m"
-    limit_mem       = "4Gi"
+    host = ""
+    resources = {
+      request = {
+        cpu = "1"
+        mem = "2Gi"
+      }
+      limit = {
+        cpu = "2"
+        mem = "3Gi"
+      }
+    }
     prometheus_url  = "http://prometheus-operated.monitoring.svc.cluster.local:9090"
     certificate_arn = ""
   }

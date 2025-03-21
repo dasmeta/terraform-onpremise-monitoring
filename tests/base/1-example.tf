@@ -73,6 +73,13 @@ module "this" {
     certificate_arn = "arn:aws:acm:us-east-2:774305617028:certificate/0c7b32a5-cfd3-488b-800c-fe289f3bb040"
     host            = "grafana.example.com"
     prometheus_url  = "http://prometheus-operated.monitoring.svc.cluster.local:9090"
+
+    resources = {
+      request = {
+        cpu = "1"
+        mem = "2Gi"
+      }
+    }
   }
   grafana_admin_password = "admin"
 }

@@ -156,15 +156,74 @@ variable "alerts" {
 }
 
 variable "grafana_configs" {
-  type        = map(any)
+  type = object({
+    host = string
+    resources = optional(object({
+      request = object({
+        cpu = string
+        mem = string
+      })
+      limit = optional(object({
+        cpu = optional(string)
+        mem = optional(string)
+      }))
+      })
+    )
+    prometheus_url  = string
+    certificate_arn = string
+  })
   description = "values to be used as grafana's chart values"
-  default     = {}
+  default = {
+    host = ""
+    resources = {
+      request = {
+        cpu = "1"
+        mem = "2Gi"
+      }
+      limit = {
+        cpu = "2"
+        mem = "3Gi"
+      }
+    }
+    prometheus_url  = "http://prometheus-operated.monitoring.svc.cluster.local:9090"
+    certificate_arn = ""
+  }
 }
 
 variable "prometheus_configs" {
-  type        = map(any)
+  type = object({
+    retention_days = string
+    storage_class  = string
+    storage_size   = string
+    resources = object({
+      request = object({
+        cpu = string
+        mem = string
+      })
+      limit = object({
+        cpu = string
+        mem = string
+      })
+    })
+    enable_alertmanager = bool
+  })
   description = "values to be used as prometheus's chart values"
-  default     = {}
+  default = {
+    retention_days = "15d"
+    storage_class  = "efs-sc"
+    storage_size   = "50Gi"
+    resources = {
+      request = {
+        cpu = "500m"
+        mem = "500Mi"
+      }
+      limit = {
+        cpu = "1"
+        mem = "1Gi"
+      }
+    }
+    enable_alertmanager = true
+  }
 }
 
 variable "grafana_admin_password" {
