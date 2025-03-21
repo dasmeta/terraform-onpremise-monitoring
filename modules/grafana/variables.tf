@@ -11,21 +11,10 @@ variable "grafana_admin_password" {
   default     = ""
 }
 
-variable "enable_grafana" {
-  type        = bool
-  description = "flag to either enable or disable grafana deployment"
-  default     = true
-}
-
 variable "prometheus_datasource" {
   type        = bool
   description = "boolean flag to enable prometheus datasource"
   default     = true
-}
-
-variable "folder_uid" {
-  type    = string
-  default = ""
 }
 
 variable "cloudwatch_datasource" {
@@ -39,46 +28,44 @@ variable "aws_region" {
   default = "eu-central-1"
 }
 
-variable "grafana_configs" {
+variable "configs" {
   type = object({
-    resources = object({
-      request = object({
-        cpu = string
-        mem = string
-      })
-      limit = object({
-        cpu = string
-        mem = string
-      })
-    })
+    resources = optional(object({
+      request = optional(object({
+        cpu = optional(string, "1")
+        mem = optional(string, "2Gi")
+      }), {})
+      limit = optional(object({
+        cpu = optional(string, "2")
+        mem = optional(string, "3Gi")
+      }), {})
+    }), {})
+    persistence = optional(object({
+      enabled = optional(bool, true)
+      type    = optional(string, "pvc")
+      size    = optional(string, "10Gi")
+    }), {})
     ingress_configs = optional(object({
-      annotations = optional(map(string))
-      hosts       = list(string)
-      path        = optional(string)
-      path_type   = optional(string)
-    }))
-    prometheus_url = string
+      annotations = optional(map(string),
+        {
+          "kubernetes.io/ingress.class"                = "alb"
+          "alb.ingress.kubernetes.io/scheme"           = "internet-facing"
+          "alb.ingress.kubernetes.io/target-type"      = "ip"
+          "alb.ingress.kubernetes.io/listen-ports"     = "[{\\\"HTTP\\\": 80}]"
+          "alb.ingress.kubernetes.io/group.name"       = "monitoring"
+          "alb.ingress.kubernetes.io/healthcheck-path" = "/api/health"
+        }
+      )
+      hosts     = optional(list(string), ["grafana.example.com"])
+      path      = optional(string, "/")
+      path_type = optional(string, "Prefix")
+    }), {})
+    prometheus_url = optional(string, "http://prometheus-operated.monitoring.svc.cluster.local:9090")
+
+    replicas  = optional(number, 1)
+    image_tag = optional(string, "11.4.2")
   })
 
   description = "Values to construct the values file for Grafana Helm chart"
-
-  default = {
-    resources = {
-      request = {
-        cpu = "1"
-        mem = "2Gi"
-      }
-      limit = {
-        cpu = "2"
-        mem = "3Gi"
-      }
-    }
-    ingress_configs = {
-      annotations = {}
-      hosts       = ["grafana.example.com"]
-      path        = ""
-      path_type   = ""
-    }
-    prometheus_url = "http://prometheus-operated.monitoring.svc.cluster.local:9090"
-  }
+  default     = {}
 }

@@ -30,9 +30,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_enable_prometheus"></a> [enable\_prometheus](#input\_enable\_prometheus) | boolean flag to enable disable prometheus deployment | `bool` | `true` | no |
+| <a name="input_configs"></a> [configs](#input\_configs) | Values to send to Prometheus template values file | <pre>object({<br/>    retention_days = optional(string, "15d")<br/>    storage_class  = optional(string, "efs-sc-root")<br/>    storage_size   = optional(string, "10Gi")<br/>    resources = optional(object({<br/>      request = optional(object({<br/>        cpu = optional(string, "500m")<br/>        mem = optional(string, "500Mi")<br/>      }), {})<br/>      limit = optional(object({<br/>        cpu = optional(string, "1")<br/>        mem = optional(string, "1Gi")<br/>      }), {})<br/>    }), {})<br/>    enable_alertmanager = optional(bool, true)<br/>  })</pre> | `{}` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | namespace to use for deployment | `string` | `"monitoring"` | no |
-| <a name="input_prometheus_configs"></a> [prometheus\_configs](#input\_prometheus\_configs) | Values to send to Prometheus template values file | <pre>object({<br/>    retention_days = string<br/>    storage_class  = string<br/>    storage_size   = string<br/>    resources = object({<br/>      request = object({<br/>        cpu = string<br/>        mem = string<br/>      })<br/>      limit = object({<br/>        cpu = string<br/>        mem = string<br/>      })<br/>    })<br/>    enable_alertmanager = bool<br/>  })</pre> | <pre>{<br/>  "enable_alertmanager": true,<br/>  "resources": {<br/>    "limit": {<br/>      "cpu": "1",<br/>      "mem": "1Gi"<br/>    },<br/>    "request": {<br/>      "cpu": "500m",<br/>      "mem": "500Mi"<br/>    }<br/>  },<br/>  "retention_days": "15d",<br/>  "storage_class": "efs-sc",<br/>  "storage_size": "50Gi"<br/>}</pre> | no |
 
 ## Outputs
 

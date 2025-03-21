@@ -26,14 +26,20 @@ module "alerts" {
 }
 
 module "grafana" {
-  source                 = "./modules/grafana"
+  source = "./modules/grafana"
+
+  count = var.grafana_configs.enabled ? 1 : 0
+
   grafana_admin_password = var.grafana_admin_password
-  grafana_configs        = var.grafana_configs
+  configs                = var.grafana_configs
   aws_region             = var.aws_region
 
 }
 
 module "prometheus" {
-  source             = "./modules/prometheus"
-  prometheus_configs = var.prometheus_configs
+  source = "./modules/prometheus"
+
+  count = var.prometheus_configs.enabled ? 1 : 0
+
+  configs = var.prometheus_configs
 }

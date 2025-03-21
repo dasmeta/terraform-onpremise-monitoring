@@ -87,9 +87,9 @@ module "this" {
         "alb.ingress.kubernetes.io/group.name"       = "dev-ingress"
         "alb.ingress.kubernetes.io/healthcheck-path" = "/api/health"
         "alb.ingress.kubernetes.io/ssl-redirect"     = "443"
-        "alb.ingress.kubernetes.io/certificate-arn"  = "{certeficate_arn}"
+        "alb.ingress.kubernetes.io/certificate-arn"  = "arn:aws:acm:us-east-2:774305617028:certificate/0c7b32a5-cfd3-488b-800c-fe289f3bb040"
       }
-      hosts = ["grafana.example.com"]
+      hosts = ["grafana.dev.trysela.com"]
     }
   }
   grafana_admin_password = "admin"

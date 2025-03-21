@@ -1,35 +1,35 @@
 
 persistence:
-  enabled: true
-  type: pvc
-  size: 10Gi
+  enabled: ${enabled_persistence}
+  type: ${persistence_type}
+  size: ${persistence_size}
 
 ingress:
   enabled: true
   annotations:
-%{~ for k, v in INGRESS_ANNOTATIONS }
+%{~ for k, v in ingress_annotations }
     ${k}: "${v}"
-%{~ endfor }
+%{ endfor }
   hosts:
-%{ for h in INGRESS_HOSTS ~}
+%{~ for h in ingress_hosts }
     - ${h}
-%{ endfor ~}
-  path: ${INGRESS_PATH}
-  pathType: ${INGRESS_PATH_TYPE}
+%{ endfor }
+  path: ${ingress_path}
+  pathType: ${ingress_path_type}
 
 datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
-%{~ if PROMETHEUS_ENABLE }
+%{~ if prometheus_enable }
       - name: Prometheus
         type: prometheus
         access: proxy
-        url: ${PROMETHEUS_URL}
+        url: ${prometheus_url}
         isDefault: true
         editable: true
-%{~ endif }
-%{~ if CLOUDWATCH_ENABLE }
+%{~ endif ~}
+%{~ if cloudwatch_enable }
       - name: CloudWatch
         type: cloudwatch
         access: proxy
@@ -37,20 +37,21 @@ datasources:
         editable: false
         jsonData:
           authType: default
-          assumeRoleArn: ${CLOUDWATCH_ROLE_ARN}
-          defaultRegion: ${AWS_REGION}
-%{~ endif }
+          assumeRoleArn: ${cloudwatch_role_arn}
+          defaultRegion: ${aws_region}
+%{~ endif ~}
 
-replicas: 1
-image.tag: "11.4.2"
+replicas: ${replicas}
+image:
+  tag: ${image_tag}
 
 resources:
   requests:
-    cpu: ${REQUEST_CPU}
-    memory: ${REQUEST_MEMORY}
+    cpu: ${request_cpu}
+    memory: ${request_memory}
   limits:
-    cpu: ${LIMIT_CPU}
-    memory: ${LIMIT_MEMORY}
+    cpu: ${limit_cpu}
+    memory: ${limit_memory}
 
 serviceMonitor:
   enabled: true

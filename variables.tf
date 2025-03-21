@@ -4,11 +4,6 @@ variable "name" {
   description = "Dashboard name"
 }
 
-variable "folder_uid" {
-  type    = string
-  default = ""
-}
-
 variable "application_dashboard" {
   type = object({
     rows = optional(any, [])
@@ -157,82 +152,67 @@ variable "alerts" {
 
 variable "grafana_configs" {
   type = object({
-    resources = object({
+    enabled = optional(bool, true)
+    resources = optional(object({
       request = optional(object({
-        cpu = optional(string)
-        mem = optional(string)
-      }))
+        cpu = optional(string, "1")
+        mem = optional(string, "2Gi")
+      }), {})
       limit = optional(object({
-        cpu = optional(string)
-        mem = optional(string)
-      }))
-    })
+        cpu = optional(string, "2")
+        mem = optional(string, "3Gi")
+      }), {})
+    }), {})
+    persistence = optional(object({
+      enabled = optional(bool, true)
+      type    = optional(string, "pvc")
+      size    = optional(string, "10Gi")
+    }), {})
     ingress_configs = optional(object({
-      annotations = optional(map(string))
-      hosts       = list(string)
-      path        = optional(string)
-      path_type   = optional(string)
+      annotations = optional(map(string),
+        {
+          "kubernetes.io/ingress.class"                = "alb"
+          "alb.ingress.kubernetes.io/scheme"           = "internet-facing"
+          "alb.ingress.kubernetes.io/target-type"      = "ip"
+          "alb.ingress.kubernetes.io/listen-ports"     = "[{\"HTTP\": 80}]"
+          "alb.ingress.kubernetes.io/group.name"       = "monitoring"
+          "alb.ingress.kubernetes.io/healthcheck-path" = "/api/health"
+        }
+      )
+      hosts     = optional(list(string), ["grafana.example.com"])
+      path      = optional(string, "/")
+      path_type = optional(string, "Prefix")
     }))
-    prometheus_url = string
+    prometheus_url = optional(string, "http://prometheus-operated.monitoring.svc.cluster.local:9090")
+
+    replicas  = optional(number, 1)
+    image_tag = optional(string, "11.4.2")
   })
 
   description = "Values to construct the values file for Grafana Helm chart"
-
-  default = {
-    resources = {
-      request = {
-        cpu = "1"
-        mem = "2Gi"
-      }
-      limit = {
-        cpu = "2"
-        mem = "3Gi"
-      }
-    }
-    ingress_configs = {
-      annotations = {}
-      hosts       = ["grafana.example.com"]
-      path        = ""
-      path_type   = ""
-    }
-    prometheus_url = "http://prometheus-operated.monitoring.svc.cluster.local:9090"
-  }
+  default     = {}
 }
 
 variable "prometheus_configs" {
   type = object({
-    retention_days = string
-    storage_class  = string
-    storage_size   = string
-    resources = object({
-      request = object({
-        cpu = string
-        mem = string
-      })
-      limit = object({
-        cpu = string
-        mem = string
-      })
-    })
-    enable_alertmanager = bool
+    enabled        = optional(bool, true)
+    retention_days = optional(string, "15d")
+    storage_class  = optional(string, "efs-sc-root")
+    storage_size   = optional(string, "10Gi")
+    resources = optional(object({
+      request = optional(object({
+        cpu = optional(string, "500m")
+        mem = optional(string, "500Mi")
+      }), {})
+      limit = optional(object({
+        cpu = optional(string, "1")
+        mem = optional(string, "1Gi")
+      }), {})
+    }), {})
+    enable_alertmanager = optional(bool, true)
   })
   description = "values to be used as prometheus's chart values"
-  default = {
-    retention_days = "15d"
-    storage_class  = "efs-sc"
-    storage_size   = "50Gi"
-    resources = {
-      request = {
-        cpu = "500m"
-        mem = "500Mi"
-      }
-      limit = {
-        cpu = "1"
-        mem = "1Gi"
-      }
-    }
-    enable_alertmanager = true
-  }
+  default     = {}
 }
 
 variable "grafana_admin_password" {

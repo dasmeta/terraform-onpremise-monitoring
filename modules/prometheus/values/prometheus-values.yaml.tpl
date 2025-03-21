@@ -1,3 +1,4 @@
+
 grafana:
   enabled: false
 
@@ -10,26 +11,26 @@ prometheus:
   enabled: true
   prometheusSpec:
     replicas: 2
-    retention: ${RETENTION_DAYS} # 15d
+    retention: ${retention_days}
     storageSpec:
       volumeClaimTemplate:
         spec:
-          storageClassName: ${STORAGE_CLASS_NAME} # efs-sc-root
+          storageClassName: ${storage_class_name}
           accessModes: ["ReadWriteMany"]
           resources:
             requests:
-              storage: ${STORAGE_SIZE} # 50Gi
+              storage: ${storage_size}
     resources:
       requests:
-        memory: ${REQUEST_MEM} # 2Gi
-        cpu: ${REQUEST_CPU} # 500m
+        memory: ${request_mem}
+        cpu: ${request_cpu}
       limits:
-        memory: ${LIMIT_MEM} # 4Gi
-        cpu: ${LIMIT_CPU} # 1000m
+        memory: ${limit_mem}
+        cpu: ${limit_cpu}
     serviceMonitorSelectorNilUsesHelmValues: false
 
 alertmanager:
-  enabled: ${ENABLE_ALERTMANAGER}
+  enabled: ${enable_alertmanager}
   alertmanagerSpec:
     replicas: 1
     resources:

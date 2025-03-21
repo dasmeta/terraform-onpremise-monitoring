@@ -4,46 +4,25 @@ variable "namespace" {
   default     = "monitoring"
 }
 
-variable "enable_prometheus" {
-  type        = bool
-  description = "boolean flag to enable disable prometheus deployment"
-  default     = true
-}
-
-variable "prometheus_configs" {
+variable "configs" {
   type = object({
-    retention_days = string
-    storage_class  = string
-    storage_size   = string
-    resources = object({
-      request = object({
-        cpu = string
-        mem = string
-      })
-      limit = object({
-        cpu = string
-        mem = string
-      })
-    })
-    enable_alertmanager = bool
+    retention_days = optional(string, "15d")
+    storage_class  = optional(string, "efs-sc-root")
+    storage_size   = optional(string, "10Gi")
+    resources = optional(object({
+      request = optional(object({
+        cpu = optional(string, "500m")
+        mem = optional(string, "500Mi")
+      }), {})
+      limit = optional(object({
+        cpu = optional(string, "1")
+        mem = optional(string, "1Gi")
+      }), {})
+    }), {})
+    enable_alertmanager = optional(bool, true)
   })
 
   description = "Values to send to Prometheus template values file"
 
-  default = {
-    retention_days = "15d"
-    storage_class  = "efs-sc"
-    storage_size   = "50Gi"
-    resources = {
-      request = {
-        cpu = "500m"
-        mem = "500Mi"
-      }
-      limit = {
-        cpu = "1"
-        mem = "1Gi"
-      }
-    }
-    enable_alertmanager = true
-  }
+  default = {}
 }
