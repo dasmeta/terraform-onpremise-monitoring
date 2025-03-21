@@ -8,8 +8,7 @@ module "this" {
       { type : "block/sla" },
       { type : "block/ingress" },
       { type : "block/service", name : "backend", host : "api.example.com" },
-      { type : "block/service", name : "worker" },
-      { type : "block/service", name : "talk" }
+      { type : "block/service", name : "worker" }
     ]
     data_source = {
       uid : "#######"
@@ -87,9 +86,9 @@ module "this" {
         "alb.ingress.kubernetes.io/group.name"       = "dev-ingress"
         "alb.ingress.kubernetes.io/healthcheck-path" = "/api/health"
         "alb.ingress.kubernetes.io/ssl-redirect"     = "443"
-        "alb.ingress.kubernetes.io/certificate-arn"  = "arn:aws:acm:us-east-2:774305617028:certificate/0c7b32a5-cfd3-488b-800c-fe289f3bb040"
+        "alb.ingress.kubernetes.io/certificate-arn"  = "certificate_arn"
       }
-      hosts = ["grafana.dev.trysela.com"]
+      hosts = ["grafana.example.com"]
     }
   }
   grafana_admin_password = "admin"
